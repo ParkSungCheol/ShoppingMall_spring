@@ -10,6 +10,6 @@ public class TestController {
 
     @GetMapping("/data")
     public String test() {
-        return "first build";
+        return "first build!!";
     }
 }
