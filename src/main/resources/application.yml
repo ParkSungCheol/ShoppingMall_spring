@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: root
+    password: 1234
+    mapper-locations: classpath:/mapper/**/*.xml
+    jdbc-url: jdbc:mysql://3.39.250.156:3306/shoppingMall?&serverTimezone=UTC&autoReconnect=true&allowMultiQueries=true&characterEncoding=UTF-8
+    driver: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  config-location: classpath:/mybatis/mybatis-config.xml
+
+server:
+  port: 8080
