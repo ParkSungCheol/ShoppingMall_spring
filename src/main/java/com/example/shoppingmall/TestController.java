@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
 @RestController
 public class TestController {
 
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping("/")
     public List<User> getUserList () {
         return userService.getUserList();
     }
