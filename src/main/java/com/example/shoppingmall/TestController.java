@@ -17,6 +17,6 @@ public class TestController {
 
     @GetMapping("/")
     public String getUserList () {
-        return "testing";
+        return "tested";
     }
 }
