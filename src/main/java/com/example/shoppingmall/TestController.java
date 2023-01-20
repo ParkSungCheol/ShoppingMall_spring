@@ -16,7 +16,7 @@ public class TestController {
     private final UserService userService;
 
     @GetMapping("/")
-    public String getUserList () {
-        return "finalTest3!@@";
+    public List<User> getUserList () {
+        return userService.getUserList();
     }
 }
