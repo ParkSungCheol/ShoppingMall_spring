@@ -16,6 +16,11 @@ public class TestController {
     private final UserService userService;
 
     @GetMapping("/")
+    public String getTest () {
+        return "test";
+    }
+
+    @GetMapping("/data")
     public List<User> getUserList () {
         return userService.getUserList();
     }
