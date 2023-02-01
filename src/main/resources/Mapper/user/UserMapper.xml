@@ -10,6 +10,6 @@
         FROM
             TEST
         ORDER by
-            NAME asc
+            NAME ASC
     </select>
 </mapper>
