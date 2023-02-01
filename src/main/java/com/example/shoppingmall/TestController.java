@@ -22,7 +22,7 @@ public class TestController {
 
     @GetMapping("/")
     public String getTest () {
-        return "huh..?";
+        return "what..?";
     }
 
     @GetMapping("/data")
