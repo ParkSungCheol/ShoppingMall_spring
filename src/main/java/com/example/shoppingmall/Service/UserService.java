@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserMapper userMapper;
+    private UserMapper userMapper;
 
     public List<User> getUserList() {
         return userMapper.getUserList();
