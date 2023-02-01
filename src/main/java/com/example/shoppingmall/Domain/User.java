@@ -1,10 +1,15 @@
 package com.example.shoppingmall.Domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
 public class User {
-    public String NAME;
-    public int AGE;
-    public String GENDER;
+	@JsonProperty
+    private String NAME;
+	@JsonProperty
+    private int AGE;
+	@JsonProperty
+    private String GENDER;
 }
