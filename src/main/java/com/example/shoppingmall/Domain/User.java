@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class User {
 	@JsonProperty
-    private String NAME;
+    private String name;
 	@JsonProperty
-    private int AGE;
+    private int age;
 	@JsonProperty
-    private String GENDER;
+    private String gender;
 }
