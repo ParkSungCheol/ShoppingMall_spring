@@ -22,7 +22,7 @@ public class TestController {
 
     @GetMapping("/")
     public String getTest () {
-        return "test1212..?";
+        return "TTTTtest1212..?";
     }
 
     @GetMapping("/data")
