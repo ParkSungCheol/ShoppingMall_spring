@@ -25,8 +25,13 @@ public class TestController {
         return "TTTTtest1212..?";
     }
 
-    @GetMapping("/data")
+    @GetMapping("/user")
     public List<User> getUserList () {
+        return userService.getUserList();
+    }
+    
+    @GetMapping("/goods")
+    public List<User> getGoodsList () {
         return userService.getUserList();
     }
 }

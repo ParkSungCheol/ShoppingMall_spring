@@ -4,12 +4,19 @@
 
     <select id="getUserList" resultType="com.example.shoppingmall.Domain.User">
         SELECT
-            NAME
-             ,	AGE
-             ,  GENDER
+            id
+             ,	pwd
+             ,  name
+             ,  address
+             ,  phone
+             ,  grade
+             ,  category
+             ,  age
+             ,  email
+             ,  date
         FROM
-            TEST
+            user
         ORDER by
-            NAME ASC
+            id ASC
     </select>
 </mapper>
