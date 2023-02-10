@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = {"http://ec2-43-200-181-206.ap-northeast-2.compute.amazonaws.com", "http://localhost", "http://www.juromarket.kro.kr"})
+@CrossOrigin(origins = {"http://ec2-43-200-181-206.ap-northeast-2.compute.amazonaws.com", "http://localhost", "https://www.juromarket.kro.kr"})
 public class TestController {
 
 	@Autowired
