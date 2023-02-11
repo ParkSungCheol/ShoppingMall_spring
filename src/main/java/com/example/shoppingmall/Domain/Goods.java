@@ -28,4 +28,6 @@ public class Goods {
 	private Timestamp date;
 	@JsonProperty
     private String image;
+	@JsonProperty
+    private String detail;
 }
