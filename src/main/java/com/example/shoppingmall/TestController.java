@@ -1,6 +1,8 @@
 package com.example.shoppingmall;
 
+import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.User;
+import com.example.shoppingmall.Service.GoodsService;
 import com.example.shoppingmall.Service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,8 @@ public class TestController {
 
 	@Autowired
     private UserService userService;
+	@Autowired
+	private GoodsService goodsService;
 
     @GetMapping("/")
     public String getTest () {
@@ -31,7 +35,7 @@ public class TestController {
     }
     
     @GetMapping("/goods")
-    public List<User> getGoodsList () {
-        return userService.getUserList();
+    public List<Goods> getGoodsList () {
+        return goodsService.getGoodsList();
     }
 }

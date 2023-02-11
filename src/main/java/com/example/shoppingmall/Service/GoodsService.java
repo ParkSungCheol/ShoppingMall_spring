@@ -16,7 +16,7 @@ public class GoodsService {
 	@Autowired
     private GoodsMapper goodsMapper;
 
-    public List<Goods> getUserList() {
+    public List<Goods> getGoodsList() {
         return goodsMapper.getGoodsList();
     }
 }
