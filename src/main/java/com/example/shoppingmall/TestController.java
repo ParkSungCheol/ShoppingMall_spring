@@ -26,7 +26,7 @@ public class TestController {
 
     @GetMapping("/")
     public String getTest () {
-        return "test";
+        return "jenkins test";
     }
 
     @GetMapping("/user")
