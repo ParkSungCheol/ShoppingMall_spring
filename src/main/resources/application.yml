@@ -10,7 +10,7 @@ logging:
     jdbc:
       sqlonly: off
       sqltiming: info
-      resultsettable: info
+      resultsettable: off
       audit: off
       resultset: off
       connection: off
