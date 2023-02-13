@@ -11,6 +11,8 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -45,6 +47,16 @@ public class DbConfig {
     @Bean(name = "SessionTemplate")
     public SqlSessionTemplate SqlSessionTemplate(@Qualifier("SqlSessionFactory") SqlSessionFactory firstSqlSessionFactory) {
         return new SqlSessionTemplate(firstSqlSessionFactory);
+    }
+    
+    /**
+     * transaction manager
+     */
+    @Bean(name= "txManager")
+    public PlatformTransactionManager txManager(@Qualifier("dataSource") DataSource dataSource) {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(dataSource);
+        dataSourceTransactionManager.setNestedTransactionAllowed(true); // nested
+        return dataSourceTransactionManager;
     }
 
 }
