@@ -26,19 +26,16 @@ public class TestController {
 
     @GetMapping("/")
     public String getTest () {
-    	System.out.println("test");
         return "jenkins test";
     }
 
     @GetMapping("/user")
     public List<User> getUserList () {
-    	System.out.println("user");
         return userService.getUserList();
     }
     
     @GetMapping("/goods")
     public List<Goods> getGoodsList () {
-    	System.out.println("goods");
         return goodsService.getGoodsList();
     }
 }
