@@ -26,6 +26,7 @@ public class TestController {
 
     @GetMapping("/")
     public String getTest () {
+    	System.out.println("test");
         return "jenkins test";
     }
 
