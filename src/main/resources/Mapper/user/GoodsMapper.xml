@@ -20,4 +20,23 @@
         ORDER by
             rownum ASC
     </select>
+    
+    <delete id="deleteGoodsList">
+		DELETE FROM goods;
+	</delete>
+	
+	<insert id="insertGoodsList">
+		INSERT INTO goods(name, price, amount, discountamount, discountrate, deliveryfee, sellid, date, image, detail) VALUES(
+		'newname',
+		1000,
+		2,
+		NULL,
+		0.03,
+		500,
+		'id',
+		sysdate(),
+		'image',
+		'www.google.com'
+		)
+	</insert>
 </mapper>

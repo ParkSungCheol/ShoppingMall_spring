@@ -19,4 +19,12 @@ public class GoodsService {
     public List<Goods> getGoodsList() {
         return goodsMapper.getGoodsList();
     }
+    
+    public void deleteGoodsList() {
+    	goodsMapper.deleteGoodsList();
+    }
+    
+    public void insertGoodsList() {
+    	goodsMapper.insertGoodsList();
+    }
 }

@@ -19,23 +19,4 @@
         ORDER by
             id ASC
     </select>
-    
-    <delete id="deleteUserList">
-		DELETE FROM user;
-	</delete>
-	
-	<insert id="insertUserList">
-		INSERT INTO user VALUES(
-		'newid',
-		'newpwd',
-		'박성철',
-		'address',
-		'phone',
-		'G',
-		'S',
-		1,
-		email,
-		sysdate()
-		)
-	</insert>
 </mapper>

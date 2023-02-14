@@ -45,7 +45,7 @@ public class TestController {
     
     @GetMapping("/test")
     public void insertDeleteUserList() {
-    	userService.deleteUserList();
-    	userService.insertUserList();
+    	goodsService.deleteGoodsList();
+    	goodsService.insertGoodsList();
     }
 }

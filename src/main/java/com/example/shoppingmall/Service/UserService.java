@@ -19,12 +19,4 @@ public class UserService {
     public List<User> getUserList() {
         return userMapper.getUserList();
     }
-    
-    public void deleteUserList() {
-    	userMapper.deleteUserList();
-    }
-    
-    public void insertUserList() {
-    	userMapper.insertUserList();
-    }
 }

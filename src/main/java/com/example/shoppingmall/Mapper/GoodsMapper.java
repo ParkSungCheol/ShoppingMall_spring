@@ -10,5 +10,6 @@ import java.util.List;
 public interface GoodsMapper {
 
     List<Goods> getGoodsList();
-    
+    void deleteGoodsList();
+    void insertGoodsList();
 }
