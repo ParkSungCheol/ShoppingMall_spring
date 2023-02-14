@@ -38,6 +38,7 @@ public class TestController {
     }
     
     @GetMapping("/goods")
+    @Transactional(value="txManager")
     public List<Goods> getGoodsList () {
         return goodsService.getGoodsList();
     }
