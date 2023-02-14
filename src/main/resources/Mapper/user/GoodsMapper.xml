@@ -33,7 +33,7 @@
 		NULL,
 		0.03,
 		500,
-		'id',
+		NULL,
 		sysdate(),
 		'image',
 		'www.google.com'
