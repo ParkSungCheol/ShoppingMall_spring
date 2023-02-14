@@ -44,6 +44,7 @@ public class TestController {
     }
     
     @GetMapping("/test")
+    @Transactional(value="txManager")
     public void insertDeleteUserList() {
     	goodsService.deleteGoodsList();
     	goodsService.insertGoodsList();
