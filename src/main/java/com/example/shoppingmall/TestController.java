@@ -41,4 +41,10 @@ public class TestController {
     public List<Goods> getGoodsList () {
         return goodsService.getGoodsList();
     }
+    
+    @GetMapping("/test")
+    public void insertDeleteUserList() {
+    	userService.deleteUserList();
+    	userService.insertUserList();
+    }
 }
