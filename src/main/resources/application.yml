@@ -1,9 +1,9 @@
 spring:
   datasource:
     username: root
-    password: 1234
+    password: 1q2w3e4r!@#$
     mapper-locations: classpath:/Mapper/**/*.xml
-    jdbc-url: jdbc:log4jdbc:mysql://13.124.168.134:3306/shoppingMall?&serverTimezone=UTC&autoReconnect=true&allowMultiQueries=true&characterEncoding=UTF-8
+    jdbc-url: jdbc:log4jdbc:mysql://13.124.168.134:3307/shoppingMall?&serverTimezone=UTC&autoReconnect=true&allowMultiQueries=true&characterEncoding=UTF-8
     driver: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
 logging:
   level:
