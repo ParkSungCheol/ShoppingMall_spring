@@ -28,7 +28,7 @@ public class TestController {
     @GetMapping("/")
     public String getTest () {
     	System.out.println("test");
-        return "jenkins test";
+        return "퇴근소망";
     }
 
     @GetMapping("/user")
