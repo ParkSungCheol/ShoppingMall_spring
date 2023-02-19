@@ -1,19 +1,23 @@
 package com.example.shoppingmall;
 
-import com.example.shoppingmall.Domain.Goods;
-import com.example.shoppingmall.Domain.User;
-import com.example.shoppingmall.Service.GoodsService;
-import com.example.shoppingmall.Service.UserService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import com.example.shoppingmall.Domain.Goods;
+import com.example.shoppingmall.Domain.User;
+import com.example.shoppingmall.Service.GoodsService;
+import com.example.shoppingmall.Service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
@@ -49,4 +53,17 @@ public class TestController {
     	goodsService.deleteGoodsList();
     	goodsService.insertGoodsList();
     }
+    
+    @GetMapping("/login")
+    @Transactional(value="txManager")
+    public List<User> loginCheck(User User, HttpServletRequest req) throws Exception {
+    	
+    	//HttpSession session = req.getSession();
+    	List<User> user = userService.loginCheck(User);
+
+	
+	ModelAndView mv = new ModelAndView("user/login/loginForm");
+	return mv;
+	}
+
 }

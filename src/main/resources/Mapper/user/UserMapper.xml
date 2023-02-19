@@ -19,4 +19,21 @@
         ORDER by
             id ASC
     </select>
+    
+    <select id="loginCheck"  resultType="com.example.shoppingmall.Domain.User">
+        SELECT
+            id
+             ,	pwd
+             ,  name
+             ,  address
+             ,  phone
+             ,  grade
+             ,  category
+             ,  age
+             ,  email
+             ,  date
+        FROM
+            user
+        WHERE id = #{id}
+    </select>
 </mapper>
