@@ -12,5 +12,5 @@ import com.example.shoppingmall.Domain.User;
 public interface UserMapper {
 
     List<User> getUserList();
-    List<User> loginCheck();
+    List<User> loginCheck(user);
 }
