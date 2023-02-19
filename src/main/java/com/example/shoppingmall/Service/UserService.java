@@ -22,12 +22,18 @@ public class UserService {
     public List<User> getUserList() {
         return userMapper.getUserList();
     }
-    public List<User> loginCheck(User user) {
-    	List<User> result = userMapper.loginCheck(user);
-    	if(result != null) {
-    		
+    
+    public boolean loginCheck(User user, HttpSession session) {
+    	User result = userMapper.loginCheck(user);
+    	if(result != null && result.getPwd().equals(user.getPwd())) {
+    		System.out.println("Success " + result.getId() + " " + result.getPwd());
+    		session.setAttribute("loginUser", result);
+    		return true;
     	}
-    	return result;
+    	else {
+    		System.out.println("Failed " + user.getId() + " " + user.getPwd());
+    		return false;
+    	}
     }
 
 }

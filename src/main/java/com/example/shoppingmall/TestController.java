@@ -1,14 +1,23 @@
 package com.example.shoppingmall;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,6 +25,7 @@ import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.User;
 import com.example.shoppingmall.Service.GoodsService;
 import com.example.shoppingmall.Service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -56,14 +66,26 @@ public class TestController {
     
     @GetMapping("/login")
     @Transactional(value="txManager")
-    public List<User> loginCheck(User User, HttpServletRequest req) throws Exception {
+    public ResponseEntity<?> loginCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
-    	//HttpSession session = req.getSession();
-    	List<User> user = userService.loginCheck(User);
-
-	
-	ModelAndView mv = new ModelAndView("user/login/loginForm");
-	return mv;
-	}
+    	HttpSession session = request.getSession();
+    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	User user = objectMapper.convertValue(param, User.class);
+    	boolean isVaild = userService.loginCheck(user, session);
+    	
+    	if(isVaild) {
+    		return new ResponseEntity<>(null, HttpStatus.OK); 
+    	}
+    	
+    	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+    
+    @GetMapping("/getSession")
+    @Transactional(value="txManager")
+    public void getSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	
+    	System.out.println(request.getCookies());
+    }
 
 }
