@@ -2,36 +2,23 @@ package com.example.shoppingmall;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.User;
 import com.example.shoppingmall.Service.GoodsService;
 import com.example.shoppingmall.Service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = {"http://ec2-43-200-181-206.ap-northeast-2.compute.amazonaws.com:8080", "http://localhost:8080", "https://www.juromarket.kro.kr"})
 public class TestController {
 
 	@Autowired
@@ -83,9 +70,10 @@ public class TestController {
     
     @GetMapping("/getSession")
     @Transactional(value="txManager")
-    public void getSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String getSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
-    	System.out.println(request.getCookies());
+    	User user = (User) request.getSession().getAttribute("loginUser");
+    	return user.getId() + " " + user.getPwd();
     }
 
 }
