@@ -74,7 +74,7 @@ public class TestController {
     @Transactional(value="txManager")
     public String getSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
-    	String userId = (String) request.getSession().getAttribute("loginUserId");
+    	String userId = (String) request.getSession(false).getAttribute("loginUserId");
     	return userId;
     }
 
