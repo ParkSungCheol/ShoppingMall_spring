@@ -64,8 +64,8 @@ public class TestController {
     	boolean isVaild = userService.loginCheck(user, session);
     	
     	if(isVaild) {
-    		Cookie myCookie = new Cookie("value1", "kr");
-    		myCookie.setDomain("kr");
+    		Cookie myCookie = new Cookie("value1", "www.juromarket.kro");
+    		myCookie.setDomain("www.juromarket.kro");
     		response.addCookie(myCookie);
     		return new ResponseEntity<>(null, HttpStatus.OK); 
     	}
