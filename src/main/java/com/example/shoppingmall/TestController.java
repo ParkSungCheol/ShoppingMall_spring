@@ -66,6 +66,7 @@ public class TestController {
     	if(isVaild) {
     		Cookie myCookie = new Cookie("value1", ".kro.kr");
     		myCookie.setDomain(".kro.kr");
+    		response.addCookie(myCookie);
     		return new ResponseEntity<>(null, HttpStatus.OK); 
     	}
     	
