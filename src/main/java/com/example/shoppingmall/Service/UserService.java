@@ -27,7 +27,7 @@ public class UserService {
     	User result = userMapper.loginCheck(user);
     	if(result != null && result.getPwd().equals(user.getPwd())) {
     		System.out.println("Success " + result.getId() + " " + result.getPwd());
-    		session.setAttribute("loginUser", result);
+    		session.setAttribute("loginUserId", result.getId());
     		return true;
     	}
     	else {
