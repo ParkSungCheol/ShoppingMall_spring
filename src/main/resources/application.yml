@@ -27,3 +27,4 @@ server:
       cookie: 
         same-site: none
         secure: true
+        max-age: P365D
