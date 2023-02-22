@@ -64,8 +64,6 @@ public class TestController {
     	boolean isVaild = userService.loginCheck(user, session);
     	
     	if(isVaild) {
-    		response.setHeader("Access-Control-Allow-Origin", "https://www.juromarket.kro.kr/#/");
-    		response.setHeader("Access-Control-Allow-Credentials", "true");
     		return new ResponseEntity<>(null, HttpStatus.OK); 
     	}
     	
