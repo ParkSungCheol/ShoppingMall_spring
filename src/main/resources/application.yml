@@ -22,3 +22,8 @@ mybatis:
 
 server:
   port: 8080
+  servlet: 
+    session: 
+      cookie: 
+        same-site: none
+        secure: true
