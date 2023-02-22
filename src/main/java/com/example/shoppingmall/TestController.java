@@ -2,6 +2,8 @@ package com.example.shoppingmall;
 
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -62,6 +64,8 @@ public class TestController {
     	boolean isVaild = userService.loginCheck(user, session);
     	
     	if(isVaild) {
+    		Cookie myCookie = new Cookie("value1", ".www.juromarket.kro.kr");
+    		myCookie.setDomain(".www.juromarket.kro.kr");
     		return new ResponseEntity<>(null, HttpStatus.OK); 
     	}
     	
