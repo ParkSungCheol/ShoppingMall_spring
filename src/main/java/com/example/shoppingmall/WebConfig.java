@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://ec2-43-200-181-206.ap-northeast-2.compute.amazonaws.com:8080", "http://localhost:8080", "https://www.juromarket.kro.kr")
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
                 .allowCredentials(true)
-                .exposedHeaders(HttpHeaders.LOCATION, HttpHeaders.SET_COOKIE);
+                .exposedHeaders("Token");
     }
 }
