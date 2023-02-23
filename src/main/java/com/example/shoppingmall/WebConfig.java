@@ -1,6 +1,7 @@
 package com.example.shoppingmall;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,6 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
                 .allowCredentials(true)
                 .allowedHeaders("*")
-                .exposedHeaders("Set-Cookie");
+                .exposedHeaders(HttpHeaders.LOCATION, HttpHeaders.SET_COOKIE);
     }
 }
