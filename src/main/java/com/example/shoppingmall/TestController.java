@@ -64,10 +64,10 @@ public class TestController {
     	boolean isVaild = userService.loginCheck(user, session);
     	
     	if(isVaild) {
-    		return new ResponseEntity<>(null, HttpStatus.OK); 
+    		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
     	
-    	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
     }
     
     @GetMapping("/getSession")
