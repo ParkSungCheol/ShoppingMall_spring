@@ -27,3 +27,4 @@ server:
       cookie: 
         same-site: none
         secure: true
+        domain: www.juromarket.kro.kr/login
