@@ -62,7 +62,8 @@ public class TestController {
     	ObjectMapper objectMapper = new ObjectMapper();
     	User user = objectMapper.convertValue(param, User.class);
     	boolean isVaild = userService.loginCheck(user, session);
-    	
+    	System.out.println("session::::::::::::"+session);
+    	System.out.println("isValid::::::::::::"+isVaild);
     	if(isVaild) {
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
