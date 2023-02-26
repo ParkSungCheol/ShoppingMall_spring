@@ -27,3 +27,4 @@ server:
       cookie: 
         same-site: none
         secure: true
+        domain: jurospring.o-r.kr
