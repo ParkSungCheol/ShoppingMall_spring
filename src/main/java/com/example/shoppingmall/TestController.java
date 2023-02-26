@@ -73,6 +73,7 @@ public class TestController {
     @GetMapping("/getSession")
     @Transactional(value="txManager")
     public String getSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	System.out.println(request.getCookies());
     	System.out.println(request.getCookies()[0]);
     	String userId = (String) request.getSession(false).getAttribute("loginUserId");
     	return userId;
