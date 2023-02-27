@@ -31,7 +31,7 @@ public class TestController {
     @GetMapping("/")
     public String getTest () {
     	System.out.println("test");
-        return "2023-02-25";
+        return "2023-02-27";
     }
 
     @GetMapping("/user")
