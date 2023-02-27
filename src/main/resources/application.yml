@@ -9,7 +9,7 @@ logging:
   level:
     jdbc:
       sqlonly: off
-      sqltiming: error
+      sqltiming: info
       resultsettable: off
       audit: off
       resultset: off
