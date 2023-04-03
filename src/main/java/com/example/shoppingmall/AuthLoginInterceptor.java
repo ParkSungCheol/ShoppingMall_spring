@@ -23,7 +23,6 @@ public class AuthLoginInterceptor implements HandlerInterceptor{
 		if(user != null) {
 			return true;
 		}
-		response.setStatus(401);
 		return false;
 	}
 	
