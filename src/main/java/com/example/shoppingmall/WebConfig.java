@@ -21,6 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthLoginInterceptor())
                 .addPathPatterns("/*") // 해당 경로에 접근하기 전에 인터셉터가 가로챈다.
-                .excludePathPatterns("/goods"); // 해당 경로는 인터셉터가 가로채지 않는다.
+                .excludePathPatterns("/goods", "/login"); // 해당 경로는 인터셉터가 가로채지 않는다.
     }
 }
