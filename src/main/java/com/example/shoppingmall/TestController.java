@@ -68,6 +68,7 @@ public class TestController {
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
     	
+    	session.invalidate();
     	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
     }
     
