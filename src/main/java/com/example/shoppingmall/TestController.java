@@ -78,5 +78,18 @@ public class TestController {
     	User user = (User) request.getSession(false).getAttribute("loginUserId");
     	return user;
     }
+    
+    @GetMapping("/logout")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> logOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session != null) {
+    		session.invalidate();
+    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    	}
+    	
+    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    }
 
 }
