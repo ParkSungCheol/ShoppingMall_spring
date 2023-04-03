@@ -67,9 +67,10 @@ public class TestController {
     	if(isVaild) {
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
-    	
-    	session.invalidate();
-    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	else {
+	    	session.invalidate();
+	    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
     }
     
     @GetMapping("/getSession")
@@ -88,8 +89,9 @@ public class TestController {
     		session.invalidate();
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
-    	
-    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	else {
+    		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
     }
 
 }
