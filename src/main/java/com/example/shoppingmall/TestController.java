@@ -70,6 +70,7 @@ public class TestController {
     @Transactional(value="txManager")
     public ResponseEntity<?> getSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	User user = (User) request.getSession(false).getAttribute("loginUserId");
+    	System.out.println(user);
     	if(user != null) {
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
