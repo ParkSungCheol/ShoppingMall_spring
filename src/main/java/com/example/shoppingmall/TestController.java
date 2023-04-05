@@ -92,7 +92,7 @@ public class TestController {
     public ResponseEntity<?> sendEmail(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	HttpSession session = request.getSession();
     	ObjectMapper objectMapper = new ObjectMapper();
-     	String email = objectMapper.convertValue(param, String.class);
+     	String email = param.get("email");
     	String mailKey = userService.sendEmail(email);
     	
     	session.setAttribute("mailKey", mailKey);
