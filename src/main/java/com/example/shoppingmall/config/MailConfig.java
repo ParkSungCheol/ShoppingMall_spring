@@ -2,6 +2,7 @@ package com.example.shoppingmall.config;
 
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,6 +11,15 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 public class MailConfig {
 
+	@Value("${spring.mail.host}")
+	private String host; 
+	@Value("${spring.mail.properties.mail.smtp.socketFactory.port}")
+	private int port;
+	@Value("${spring.mail.username}")
+	private String username;
+	@Value("${spring.mail.password}")
+	private String password;
+	
 	@Bean
 	public JavaMailSender javaMailSender() {
 		Properties mailProperties = new Properties();
@@ -22,10 +32,10 @@ public class MailConfig {
 		
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setJavaMailProperties(mailProperties);
-		mailSender.setHost("smtp.gmail.com");
-		mailSender.setPort(587);
-		mailSender.setUsername("skfo8gmlakd");
-		mailSender.setPassword("boqxlccswmdhfsrj");
+		mailSender.setHost(host);
+		mailSender.setPort(port);
+		mailSender.setUsername(username);
+		mailSender.setPassword(password);
 		mailSender.setDefaultEncoding("utf-8");
 		return mailSender;
 	}

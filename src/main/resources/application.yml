@@ -28,3 +28,17 @@ server:
         same-site: strict
         secure: true
         domain: jurospring.o-r.kr
+        
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: skfo8gmlakd
+    password: boqxlccswmdhfsrj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            port: 587
+            class: javax.net.ssl.SSLSocketFatctory
+            fallback: false
