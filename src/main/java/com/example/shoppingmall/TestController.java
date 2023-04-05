@@ -91,7 +91,6 @@ public class TestController {
     @Transactional(value="txManager")
     public ResponseEntity<?> sendEmail(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	HttpSession session = request.getSession();
-    	ObjectMapper objectMapper = new ObjectMapper();
      	String email = param.get("email");
     	String mailKey = userService.sendEmail(email);
     	
@@ -103,8 +102,7 @@ public class TestController {
     @Transactional(value="txManager")
     public ResponseEntity<?> checkEmail(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	HttpSession session = request.getSession(false);
-    	ObjectMapper objectMapper = new ObjectMapper();
-     	String userMailKey = objectMapper.convertValue(param, String.class);
+     	String userMailKey = param.get("email");
     	String mailKey = (String) session.getAttribute("mailKey");
     	
     	if(userMailKey.equals(mailKey)) {
