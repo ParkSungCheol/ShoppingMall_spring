@@ -21,6 +21,7 @@ public class AuthLoginInterceptor implements HandlerInterceptor{
 		logger.info("preHandle");
 		User user = (User) request.getSession(false).getAttribute("loginUserId");
 		System.out.println(user);
+		System.out.println(user != null);
 		if(user != null) {
 			return true;
 		}
