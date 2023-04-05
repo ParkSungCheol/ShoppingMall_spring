@@ -19,9 +19,9 @@ public class AuthLoginInterceptor implements HandlerInterceptor{
 			throws Exception {
 		// TODO Auto-generated method stub
 		logger.info("preHandle");
-		User user = (User) request.getSession(false).getAttribute("loginUserId");
 		return false;
 		/*
+		 * User user = (User) request.getSession(false).getAttribute("loginUserId");
 		 * if(user != null) { return true; } return false;
 		 */
 	}
