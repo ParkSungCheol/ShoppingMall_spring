@@ -46,13 +46,6 @@ public class TestController {
         return goodsService.getGoodsList();
     }
     
-    @GetMapping("/test")
-    @Transactional(value="txManager")
-    public void insertDeleteUserList() {
-    	goodsService.deleteGoodsList();
-    	goodsService.insertGoodsList();
-    }
-    
     @GetMapping("/login")
     @Transactional(value="txManager")
     public ResponseEntity<?> loginCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -94,4 +87,31 @@ public class TestController {
     	}
     }
 
+    @GetMapping("/sendEmail")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> sendEmail(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HttpSession session = request.getSession();
+    	ObjectMapper objectMapper = new ObjectMapper();
+     	String email = objectMapper.convertValue(param, String.class);
+    	String mailKey = userService.sendEmail(email);
+    	
+    	session.setAttribute("mailKey", mailKey);
+    	return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+    
+    @GetMapping("/checkEmail")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> checkEmail(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	ObjectMapper objectMapper = new ObjectMapper();
+     	String userMailKey = objectMapper.convertValue(param, String.class);
+    	String mailKey = (String) session.getAttribute("mailKey");
+    	
+    	if(userMailKey.equals(mailKey)) {
+    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    	}
+    	else {
+    		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
+    }
 }
