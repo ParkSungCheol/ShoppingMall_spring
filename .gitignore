@@ -38,4 +38,4 @@ out/
 /.metadata/
 .gitsecret/keys/random_seed
 !*.secret
-test.txtsrc/main/java/com/example/shoppingmall/test.java
+src/main/java/com/example/shoppingmall/test.java
