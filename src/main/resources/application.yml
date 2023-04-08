@@ -28,3 +28,9 @@ server:
         same-site: strict
         secure: true
         domain: jurospring.o-r.kr
+        
+mail:
+  host: smtp.gmail.com
+  port: 587
+  username: skfo8gmlakd
+  password: boqxlccswmdhfsrj
