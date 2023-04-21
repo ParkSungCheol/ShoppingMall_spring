@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -44,7 +46,12 @@ public class UserService {
     
     public String sendEmail(String email) throws Exception {
     	String mailKey = new TempKey().getKey(30, false);
-    	MailHandler sendMail = new MailHandler(mailSender);
+    	return mailKey;
+    }
+    
+    @Async
+    public void sendJoinCertificationMail(String mailKey, String email) throws MessagingException, UnsupportedEncodingException {
+		MailHandler sendMail = new MailHandler(mailSender);
     	
     	sendMail.setSubject("[shoppingMall 인증메일 입니다.]");
     	sendMail.setText(
@@ -55,7 +62,5 @@ public class UserService {
     	sendMail.setFrom("skfo8gmlakd@gmail.com", "shoppingMall");
     	sendMail.setTo(email);
     	sendMail.send();
-    	
-    	return mailKey;
     }
 }

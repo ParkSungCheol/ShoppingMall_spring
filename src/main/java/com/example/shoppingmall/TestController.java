@@ -98,6 +98,7 @@ public class TestController {
     	HttpSession session = request.getSession();
      	String email = param.get("email");
     	String mailKey = userService.sendEmail(email);
+    	userService.sendJoinCertificationMail(mailKey, email);
     	
     	session.setAttribute("mailKey", mailKey);
     	return new ResponseEntity<>("ok", HttpStatus.OK);
