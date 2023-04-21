@@ -1,4 +1,4 @@
-package com.example.shoppingmall;
+package com.example.shoppingmall.config;
 
 
 import java.util.concurrent.Executor;
