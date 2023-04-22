@@ -8,6 +8,7 @@ import com.example.shoppingmall.Mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,13 @@ public class UserService {
     private UserMapper userMapper;
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	private final Environment env;
+
+    @Autowired
+    public UserService(Environment env) {
+        this.env = env;
+    }
 
     public List<User> getUserList() {
         return userMapper.getUserList();
@@ -59,7 +67,7 @@ public class UserService {
     			"<br>shoppingMall에 오신것을 환영합니다!" +
 				"<br>아래 인증번호를 입력해주세요." +
     			"<br>" + mailKey);
-    	sendMail.setFrom("skfo8gmlakd@gmail.com", "shoppingMall");
+    	sendMail.setFrom(env.getProperty("mail.username") + "@gmail.com", "shoppingMall");
     	sendMail.setTo(email);
     	sendMail.send();
     }
