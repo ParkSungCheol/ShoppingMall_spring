@@ -15,20 +15,31 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.example.shoppingmall.Mail.TempKey;
+import com.example.shoppingmall.Mapper.UserMapper;
 
 @Service
 public class PhoneService {
 
+	private final Environment env;
+	
+	@Autowired
+    public PhoneService(Environment env) {
+        this.env = env;
+    }
+	
 	public String sendMessage(String phone) {
 		String num = new TempKey().getKey(4, true);
 		String hostNameUrl ="https://sens.apigw.ntruss.com";
         String requestUrl = "/sms/v2/services/";
         String requestUrlType = "/messages";
-        String accessKey = "Wllky5WqQIEUQtKdS6Ek";
-        String serviceId = "ncp:sms:kr:282863596446:jurospring";
+        String accessKey = env.getProperty("phone.accessKey");
+        String serviceId = env.getProperty("phone.serviceId");
         String method = "POST";
         String timestamp = Long.toString(System.currentTimeMillis());
         requestUrl += serviceId + requestUrlType;
@@ -47,9 +58,9 @@ public class PhoneService {
         bodyJson.put("type", "sms");
         bodyJson.put("contentType", "COMM");
         bodyJson.put("countryCode", "82");
-        bodyJson.put("from", "01076570704");
+        bodyJson.put("from", env.getProperty("phone.from"));
         bodyJson.put("subject", "");
-        bodyJson.put("content", "안녕!");
+        bodyJson.put("content", "쇼핑몰 가입인증 메시지입니다.");
         bodyJson.put("messages", toArr);
 
         String body = bodyJson.toString();
@@ -106,9 +117,9 @@ public class PhoneService {
         String space = " "; // one space
         String newLine = "\n"; // new line
         String method = "POST"; // method String
-        String url = "/sms/v2/services/" + "ncp:sms:kr:282863596446:jurospring" + "/messages"; // url (include query string)
-        String accessKey = "Wllky5WqQIEUQtKdS6Ek"; // access key id (from portal or Sub Account)
-        String secretKey = "I9ZoOJNkbC1dkVktiNDxYW3fE8Zf00iUIbsveLbi";
+        String url = "/sms/v2/services/" + env.getProperty("phone.serviceId") + "/messages"; // url (include query string)
+        String accessKey = env.getProperty("phone.accessKey"); // access key id (from portal or Sub Account)
+        String secretKey = env.getProperty("phone.secretKey");
         String message = new StringBuilder()
                 .append(method)
                 .append(space)
@@ -118,8 +129,8 @@ public class PhoneService {
                 .append(newLine)
                 .append(accessKey)
                 .toString();
-        SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
-        Mac mac = Mac.getInstance("HmacSHA256");
+        SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), env.getProperty("phone.encodingMethod"));
+        Mac mac = Mac.getInstance(env.getProperty("phone.encodingMethod"));
         mac.init(signingKey);
         byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
         String encodeBase64String = Base64.encodeBase64String(rawHmac);
