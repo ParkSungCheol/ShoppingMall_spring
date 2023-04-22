@@ -3,10 +3,10 @@ package com.example.shoppingmall;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.User;
+import com.example.shoppingmall.Phone.PhoneHandler;
 import com.example.shoppingmall.Service.GoodsService;
 import com.example.shoppingmall.Service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +28,8 @@ public class TestController {
     private UserService userService;
 	@Autowired
 	private GoodsService goodsService;
+	@Autowired
+	private PhoneHandler phoneHandler;
 
     @GetMapping("/")
     public String getTest () {
@@ -115,6 +118,19 @@ public class TestController {
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
     	else {
+    		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
+    }
+    
+    @GetMapping("/sendMessage")
+    public ResponseEntity<?> sendMessage(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
+        String phone = param.get("phone");
+        String num = phoneHandler.sendMessage(phone);
+        
+        if(num != null ) {
+        	return new ResponseEntity<>("ok", HttpStatus.OK);
+        }
+        else {
     		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
     	}
     }
