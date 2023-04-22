@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.User;
-import com.example.shoppingmall.Phone.PhoneHandler;
 import com.example.shoppingmall.Service.GoodsService;
+import com.example.shoppingmall.Service.PhoneService;
 import com.example.shoppingmall.Service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,7 +29,7 @@ public class TestController {
 	@Autowired
 	private GoodsService goodsService;
 	@Autowired
-	private PhoneHandler phoneHandler;
+	private PhoneService phoneService;
 
     @GetMapping("/")
     public String getTest () {
@@ -125,7 +125,7 @@ public class TestController {
     @GetMapping("/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
         String phone = param.get("phone");
-        String num = phoneHandler.sendMessage(phone);
+        String num = phoneService.sendMessage(phone);
         
         if(num != null ) {
         	return new ResponseEntity<>("ok", HttpStatus.OK);

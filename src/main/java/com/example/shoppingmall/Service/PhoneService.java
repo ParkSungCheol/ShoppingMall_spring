@@ -1,4 +1,4 @@
-package com.example.shoppingmall.Phone;
+package com.example.shoppingmall.Service;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,10 +15,12 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import com.example.shoppingmall.Mail.TempKey;
 
-public class PhoneHandler {
+@Service
+public class PhoneService {
 
 	public String sendMessage(String phone) {
 		String num = new TempKey().getKey(4, true);
@@ -26,7 +28,6 @@ public class PhoneHandler {
         String requestUrl = "/sms/v2/services/";
         String requestUrlType = "/messages";
         String accessKey = "Wllky5WqQIEUQtKdS6Ek";
-        String secretKey = "I9ZoOJNkbC1dkVktiNDxYW3fE8Zf00iUIbsveLbi";
         String serviceId = "ncp:sms:kr:282863596446:jurospring";
         String method = "POST";
         String timestamp = Long.toString(System.currentTimeMillis());
