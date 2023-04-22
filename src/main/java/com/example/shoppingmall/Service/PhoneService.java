@@ -40,7 +40,7 @@ public class PhoneService {
         JSONArray toArr = new JSONArray();
 
         toJson.put("subject", "");
-        toJson.put("content", "DigitalGameNomad 인증번호 [" + num +"]");
+        toJson.put("content", "ShoppingMall 인증번호 [" + num +"]");
         toJson.put("to", phone);
         toArr.put(toJson);
 
