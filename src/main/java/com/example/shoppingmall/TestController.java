@@ -124,13 +124,30 @@ public class TestController {
     
     @GetMapping("/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
-        String phone = param.get("phone");
+    	HttpSession session = request.getSession();
+    	String phone = param.get("phone");
         String num = phoneService.sendMessage(phone);
+        session.setAttribute("num", num);
         
         if(num != null ) {
         	return new ResponseEntity<>("ok", HttpStatus.OK);
         }
         else {
+    		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
+    }
+    
+    @GetMapping("/checkMessage")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> checkMessage(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HttpSession session = request.getSession(false);
+     	String userPhoneKey = param.get("phone");
+    	String num = (String) session.getAttribute("num");
+    	
+    	if(userPhoneKey.equals(num)) {
+    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    	}
+    	else {
     		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
     	}
     }
