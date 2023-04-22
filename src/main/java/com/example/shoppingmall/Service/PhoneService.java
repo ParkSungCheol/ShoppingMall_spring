@@ -58,7 +58,7 @@ public class PhoneService {
         bodyJson.put("type", "sms");
         bodyJson.put("contentType", "COMM");
         bodyJson.put("countryCode", "82");
-        bodyJson.put("from", env.getProperty("phone.from"));
+        bodyJson.put("from", env.getProperty("phone.from").replaceAll("-", ""));
         bodyJson.put("subject", "");
         bodyJson.put("content", "쇼핑몰 가입인증 메시지입니다.");
         bodyJson.put("messages", toArr);
