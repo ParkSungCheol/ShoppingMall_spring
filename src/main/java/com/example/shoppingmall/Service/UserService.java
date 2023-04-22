@@ -19,20 +19,18 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
-@RequiredArgsConstructor
 @Service
 public class UserService {
 
-	@Autowired
-    private UserMapper userMapper;
-	@Autowired
-	private JavaMailSender mailSender;
-	
+	private final UserMapper userMapper;
+    private final JavaMailSender mailSender;
 	private final Environment env;
 
     @Autowired
-    public UserService(Environment env) {
+    public UserService(Environment env, UserMapper userMapper, JavaMailSender mailSender) {
         this.env = env;
+        this.userMapper = userMapper;
+        this.mailSender = mailSender;
     }
 
     public List<User> getUserList() {
