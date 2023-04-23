@@ -1,10 +1,12 @@
-package com.example.shoppingmall;
+package com.example.shoppingmall.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.example.shoppingmall.AuthLoginInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -21,6 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthLoginInterceptor())
                 .addPathPatterns("/*") // 해당 경로에 접근하기 전에 인터셉터가 가로챈다.
-                .excludePathPatterns("/goods", "/login", "/sendEmail", "/checkEmail", "/sendMessage", "/checkMessage"); // 해당 경로는 인터셉터가 가로채지 않는다.
+                .excludePathPatterns("/goods", "/login", "/sendEmail", "/checkEmail", "/sendMessage", "/checkMessage", "/signup", "/existCheck"); // 해당 경로는 인터셉터가 가로채지 않는다.
     }
 }

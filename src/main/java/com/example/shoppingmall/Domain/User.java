@@ -25,11 +25,13 @@ public class User {
 	@JsonProperty
     private Character category;
 	@JsonProperty
-    private int age;
+    private String birth;
 	@JsonProperty
     private String email;
 	@JsonProperty
 	private Timestamp date;
+	@JsonProperty
+	private String salt;
 	public String getId() {
 		return id;
 	}
@@ -72,11 +74,11 @@ public class User {
 	public void setCategory(Character category) {
 		this.category = category;
 	}
-	public int getAge() {
-		return age;
+	public String getBirth() {
+		return birth;
 	}
-	public void setAge(int age) {
-		this.age = age;
+	public void setBirth(String birth) {
+		this.birth = birth;
 	}
 	public String getEmail() {
 		return email;
@@ -89,6 +91,12 @@ public class User {
 	}
 	public void setDate(Timestamp date) {
 		this.date = date;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	
 }

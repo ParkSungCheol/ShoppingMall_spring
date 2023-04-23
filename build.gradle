@@ -34,6 +34,9 @@ dependencies {
 	implementation group: 'org.springframework', name: 'spring-context-support', version: '5.2.1.RELEASE'
 	// https://mvnrepository.com/artifact/org.json/json
 	implementation group: 'org.json', name: 'json', version: '20160810'
+	// https://mvnrepository.com/artifact/commons-codec/commons-codec
+	implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+	
 }
 
 tasks.named('test') {

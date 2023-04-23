@@ -37,16 +37,13 @@ public class UserService {
         return userMapper.getUserList();
     }
     
-    public boolean loginCheck(User user, HttpSession session) {
-    	User result = userMapper.loginCheck(user);
-    	if(result != null && result.getPwd().equals(user.getPwd())) {
-    		System.out.println("Success " + result.getId() + " " + result.getPwd());
-    		session.setAttribute("loginUserId", result);
-    		return true;
+    public User existCheck(User user) {
+    	User result = userMapper.existCheck(user);
+    	if(result != null) {
+    		return result;
     	}
     	else {
-    		System.out.println("Failed " + user.getId() + " " + user.getPwd());
-    		return false;
+    		return null;
     	}
     }
     
@@ -68,5 +65,9 @@ public class UserService {
     	sendMail.setFrom(env.getProperty("mail.username") + "@gmail.com", "shoppingMall");
     	sendMail.setTo(email);
     	sendMail.send();
+    }
+    
+    public void insertUser(User user) {
+    	userMapper.insertUser(user);
     }
 }

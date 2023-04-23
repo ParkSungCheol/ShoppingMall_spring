@@ -1,6 +1,5 @@
 package com.example.shoppingmall;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,60 +13,23 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.shoppingmall.Domain.Goods;
+
 import com.example.shoppingmall.Domain.User;
-import com.example.shoppingmall.Service.GoodsService;
+import com.example.shoppingmall.Mail.TempKey;
+import com.example.shoppingmall.Service.EncryptService;
 import com.example.shoppingmall.Service.PhoneService;
 import com.example.shoppingmall.Service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-public class TestController {
+public class UserController {
 
 	@Autowired
     private UserService userService;
 	@Autowired
-	private GoodsService goodsService;
-	@Autowired
 	private PhoneService phoneService;
-
-    @GetMapping("/")
-    public String getTest () {
-    	System.out.println("test");
-        return "2023-03-03";
-    }
-
-    @GetMapping("/user")
-    @Transactional(value="txManager")
-    public List<User> getUserList () {
-        return userService.getUserList();
-    }
-    
-    @GetMapping("/goods")
-    @Transactional(value="txManager")
-    public List<Goods> getGoodsList () {
-        return goodsService.getGoodsList();
-    }
-    
-    @GetMapping("/login")
-    @Transactional(value="txManager")
-    public ResponseEntity<?> loginCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	
-    	HttpSession session = request.getSession();
-    	
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	User user = objectMapper.convertValue(param, User.class);
-    	boolean isVaild = userService.loginCheck(user, session);
-    	System.out.println("session::::::::::::"+session);
-    	System.out.println("isValid::::::::::::"+isVaild);
-    	if(isVaild) {
-    		return new ResponseEntity<>("ok", HttpStatus.OK); 
-    	}
-    	else {
-	    	session.invalidate();
-	    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
-    	}
-    }
+	@Autowired
+	private EncryptService encryptService;
     
     @GetMapping("/getSession")
     @Transactional(value="txManager")
@@ -78,6 +40,27 @@ public class TestController {
     	}
     	else {
     		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
+    }
+    
+    @GetMapping("/login")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> loginCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	
+    	HttpSession session = request.getSession();
+    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	User user = objectMapper.convertValue(param, User.class);
+    	User checkedUser = userService.existCheck(user);
+    	
+    	System.out.println("session::::::::::::"+session);
+    	if(checkedUser != null && encryptService.encrypt(user.getPwd() + checkedUser.getSalt()).equals(checkedUser.getPwd())) {
+    		session.setAttribute("loginUserId", checkedUser);
+    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    	}
+    	else {
+	    	session.invalidate();
+	    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
     	}
     }
     
@@ -150,5 +133,55 @@ public class TestController {
     	else {
     		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
     	}
+    }
+    
+    @GetMapping("/existCheck")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> idCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	User user = objectMapper.convertValue(param, User.class);
+    	User checkedUser = userService.existCheck(user);
+    	
+    	if(checkedUser == null) {
+    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    	}
+    	else {
+    		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
+    }
+    
+    @GetMapping("/signup")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> signup(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+     	String id = param.get("id");
+     	String pwd = param.get("pwd");
+     	String name = param.get("name");
+     	String year = param.get("year");
+     	String month = param.get("month").length() == 1 ? "0"+param.get("month") : param.get("month");
+     	String day = param.get("day").length() == 1 ? "0"+param.get("day") : param.get("day");
+     	String addressNumber = param.get("addressNumber");
+     	String address = param.get("address");
+     	String addressDetail = param.get("addressDetail");
+     	String addressDetail2 = param.get("addressDetail2");
+     	String email = param.get("email");
+     	String phone = param.get("phone");
+    	
+     	User user = new User();
+     	user.setId(id);
+     	String num = new TempKey().getKey(4, true);
+     	user.setSalt(num);
+     	user.setPwd(encryptService.encrypt(pwd + num));
+     	user.setName(name);
+     	user.setBirth(year+month+day);
+     	user.setAddress("["+addressNumber+"] "+ address +" "+ addressDetail + " " + addressDetail2 );
+     	user.setEmail(email);
+     	user.setPhone(phone);
+        user.setGrade('0');
+        user.setCategory('U');
+     	
+        userService.insertUser(user);
+        
+        //MAPPER.INSERTUSER
+        return new ResponseEntity<>("ok", HttpStatus.OK); 
     }
 }
