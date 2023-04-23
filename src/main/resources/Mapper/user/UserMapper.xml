@@ -59,7 +59,7 @@
 			, #{user.category}
 			, #{user.birth}
 			, #{user.email}
-			, SYSDATE
+			, SYSDATE()
 			, #{user.salt}
 		)
 	</insert>
