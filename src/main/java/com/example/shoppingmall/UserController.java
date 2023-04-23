@@ -36,7 +36,7 @@ public class UserController {
     public ResponseEntity<?> getSession(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	User user = (User) request.getSession(false).getAttribute("loginUserId");
     	if(user != null) {
-    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    		return new ResponseEntity<>(user, HttpStatus.OK); 
     	}
     	else {
     		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
