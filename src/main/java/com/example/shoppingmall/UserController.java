@@ -173,8 +173,8 @@ public class UserController {
      	user.setPwd(encryptService.encrypt(pwd + num));
      	user.setName(name);
      	user.setBirth(year+month+day);
-     	if(!addressDetail.equals("")) user.setAddress("["+addressNumber+"]"+ address +","+ addressDetail + addressDetail2 );
-     	else user.setAddress("["+addressNumber+"]"+ address + addressDetail2 );
+     	if(!addressDetail.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail+"^"+addressDetail2);
+     	else user.setAddress(addressNumber+"^"+address+"^"+addressDetail2);
      	user.setEmail(email);
      	user.setPhone(phone);
         user.setGrade('0');
