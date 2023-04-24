@@ -13,4 +13,5 @@ public interface UserMapper {
     List<User> getUserList();
     User existCheck(@Param("user") User user);
     void insertUser(@Param("user") User user);
+    void updateUser(@Param("user") User user);
 }

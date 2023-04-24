@@ -185,4 +185,34 @@ public class UserController {
         //MAPPER.INSERTUSER
         return new ResponseEntity<>("ok", HttpStatus.OK); 
     }
+    @GetMapping("/updateUser")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> updateUser(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+     	String id = param.get("id");
+     	String pwd = param.get("pwd");
+     	String name = param.get("name");
+     	String year = param.get("year");
+     	String month = param.get("month").length() == 1 ? "0"+param.get("month") : param.get("month");
+     	String day = param.get("day").length() == 1 ? "0"+param.get("day") : param.get("day");
+     	String addressNumber = param.get("addressNumber");
+     	String address = param.get("address");
+     	String addressDetail = param.get("addressDetail");
+     	String addressDetail2 = param.get("addressDetail2");
+     	String email = param.get("email");
+     	String phone = param.get("phone");
+    	
+     	User user = new User();
+     	user.setId(id);
+     	user.setName(name);
+     	user.setBirth(year+month+day);
+     	if(!addressDetail.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail+"^"+addressDetail2);
+     	else user.setAddress(addressNumber+"^"+address+"^"+addressDetail2);
+     	user.setEmail(email);
+     	user.setPhone(phone);
+     	
+        userService.updateUser(user);
+        
+        //MAPPER.INSERTUSER
+        return new ResponseEntity<>("ok", HttpStatus.OK); 
+    }
 }
