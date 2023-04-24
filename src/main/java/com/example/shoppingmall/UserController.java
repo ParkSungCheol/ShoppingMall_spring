@@ -188,6 +188,8 @@ public class UserController {
     @GetMapping("/updateUser")
     @Transactional(value="txManager")
     public ResponseEntity<?> updateUser(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	
      	String id = param.get("id");
      	String pwd = param.get("pwd");
      	String name = param.get("name");
@@ -211,6 +213,8 @@ public class UserController {
      	user.setPhone(phone);
      	
         userService.updateUser(user);
+        User checkedUser = userService.existCheck(user);
+        session.setAttribute("loginUserId", checkedUser);
         
         //MAPPER.INSERTUSER
         return new ResponseEntity<>("ok", HttpStatus.OK); 
