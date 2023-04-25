@@ -217,8 +217,11 @@ public class UserController {
      		if(checkedUser != null && encryptService.encrypt(beforePwd + checkedUser.getSalt()).equals(checkedUser.getPwd())) {
         		user.setPwd(encryptService.encrypt(afterPwd + checkedUser.getSalt()));
         	}
-     		else {
+     		else if(checkedUser != null) {
      			return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+     		}
+     		else {
+     			return new ResponseEntity<>("badRequest", HttpStatus.BAD_REQUEST);
      		}
      	}
         userService.updateUser(user);
