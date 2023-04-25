@@ -206,15 +206,15 @@ public class UserController {
     	
      	User user = new User();
      	user.setId(id);
-     	if(!name.equals("")) user.setName(name);
-     	if(!year.equals("")) user.setBirth(year+month+day);
-     	if(!addressDetail.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail+"^"+addressDetail2);
-     	else if(!addressNumber.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail2);
-     	if(!email.equals("")) user.setEmail(email);
-     	if(!phone.equals("")) user.setPhone(phone);
-     	if(!beforePwd.equals("")) {
+     	if(name != null && !name.equals("")) user.setName(name);
+     	if(year != null && !year.equals("")) user.setBirth(year+month+day);
+     	if(addressDetail != null && !addressDetail.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail+"^"+addressDetail2);
+     	else if(addressNumber != null && !addressNumber.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail2);
+     	if(email != null && !email.equals("")) user.setEmail(email);
+     	if(phone != null && !phone.equals("")) user.setPhone(phone);
+     	if(beforePwd != null && !beforePwd.equals("")) {
      		User checkedUser = userService.existCheck(user);
-     		if(checkedUser != null && encryptService.encrypt(user.getPwd() + checkedUser.getSalt()).equals(checkedUser.getPwd())) {
+     		if(checkedUser != null && encryptService.encrypt(beforePwd + checkedUser.getSalt()).equals(checkedUser.getPwd())) {
         		user.setPwd(encryptService.encrypt(afterPwd + checkedUser.getSalt()));
         	}
      		else {
@@ -222,7 +222,7 @@ public class UserController {
      		}
      	}
         userService.updateUser(user);
-        if(!beforePwd.equals("")) { 
+        if(beforePwd != null && !beforePwd.equals("")) { 
         	session.invalidate();
         }
         else {
