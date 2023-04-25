@@ -191,7 +191,6 @@ public class UserController {
     	HttpSession session = request.getSession(false);
     	
      	String id = param.get("id");
-     	String pwd = param.get("pwd");
      	String name = param.get("name");
      	String year = param.get("year");
      	String month = param.get("month").length() == 1 ? "0"+param.get("month") : param.get("month");
@@ -202,19 +201,34 @@ public class UserController {
      	String addressDetail2 = param.get("addressDetail2");
      	String email = param.get("email");
      	String phone = param.get("phone");
+     	String beforePwd = param.get("beforePwd");
+     	String afterPwd = param.get("afterPwd");
     	
      	User user = new User();
      	user.setId(id);
-     	user.setName(name);
-     	user.setBirth(year+month+day);
+     	if(!name.equals("")) user.setName(name);
+     	if(!year.equals("")) user.setBirth(year+month+day);
      	if(!addressDetail.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail+"^"+addressDetail2);
-     	else user.setAddress(addressNumber+"^"+address+"^"+addressDetail2);
-     	user.setEmail(email);
-     	user.setPhone(phone);
-     	
+     	else if(!addressNumber.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail2);
+     	if(!email.equals("")) user.setEmail(email);
+     	if(!phone.equals("")) user.setPhone(phone);
+     	if(!beforePwd.equals("")) {
+     		User checkedUser = userService.existCheck(user);
+     		if(checkedUser != null && encryptService.encrypt(user.getPwd() + checkedUser.getSalt()).equals(checkedUser.getPwd())) {
+        		user.setPwd(encryptService.encrypt(afterPwd + checkedUser.getSalt()));
+        	}
+     		else {
+     			return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+     		}
+     	}
         userService.updateUser(user);
-        User checkedUser = userService.existCheck(user);
-        session.setAttribute("loginUserId", checkedUser);
+        if(!beforePwd.equals("")) { 
+        	session.invalidate();
+        }
+        else {
+	    	User checkedUser = userService.existCheck(user);
+	        session.setAttribute("loginUserId", checkedUser);
+        }
         
         //MAPPER.INSERTUSER
         return new ResponseEntity<>("ok", HttpStatus.OK); 
