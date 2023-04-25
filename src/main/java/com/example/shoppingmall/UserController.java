@@ -221,7 +221,7 @@ public class UserController {
      			return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
      		}
      		else {
-     			return new ResponseEntity<>("badRequest", HttpStatus.BAD_REQUEST);
+     			return new ResponseEntity<>("internalServerError", HttpStatus.INTERNAL_SERVER_ERROR);
      		}
      	}
         userService.updateUser(user);
