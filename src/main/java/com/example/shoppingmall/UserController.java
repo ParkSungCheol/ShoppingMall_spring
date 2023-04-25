@@ -193,8 +193,8 @@ public class UserController {
      	String id = param.get("id");
      	String name = param.get("name");
      	String year = param.get("year");
-     	String month = param.get("month").length() == 1 ? "0"+param.get("month") : param.get("month");
-     	String day = param.get("day").length() == 1 ? "0"+param.get("day") : param.get("day");
+     	String month = param.get("month") != null && param.get("month").length() == 1 ? "0"+param.get("month") : param.get("month");
+     	String day = param.get("day")!= null && param.get("day").length() == 1 ? "0"+param.get("day") : param.get("day");
      	String addressNumber = param.get("addressNumber");
      	String address = param.get("address");
      	String addressDetail = param.get("addressDetail");
