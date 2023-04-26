@@ -56,8 +56,11 @@ public class UserController {
         	response.addCookie(cookie);
     	}
     	
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	User user = objectMapper.convertValue(param, User.class);
+    	String id = param.get("id");
+    	String pwd = param.get("pwd");
+    	User user = new User();
+    	user.setId(id);
+    	user.setPwd(pwd);
     	User checkedUser = userService.existCheck(user);
     	
     	System.out.println("session::::::::::::"+session);
