@@ -2,6 +2,7 @@ package com.example.shoppingmall;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -48,7 +49,9 @@ public class UserController {
     public ResponseEntity<?> loginCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
     	HttpSession session = request.getSession();
-    	session.setMaxInactiveInterval(31536000);
+    	Cookie cookie = new Cookie("JSESSIONID", session.getId());
+    	cookie.setMaxAge(Integer.MAX_VALUE);
+    	response.addCookie(cookie);
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	User user = objectMapper.convertValue(param, User.class);
