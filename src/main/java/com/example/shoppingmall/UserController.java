@@ -48,6 +48,7 @@ public class UserController {
     public ResponseEntity<?> loginCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
     	HttpSession session = request.getSession();
+    	session.setMaxInactiveInterval(31536000);
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	User user = objectMapper.convertValue(param, User.class);
