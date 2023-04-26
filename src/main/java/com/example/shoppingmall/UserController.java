@@ -240,12 +240,14 @@ public class UserController {
     @GetMapping("/deleteUser")
     @Transactional(value="txManager")
     public ResponseEntity<?> deleteUser(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	HttpSession session = request.getSession(false);
     	ObjectMapper objectMapper = new ObjectMapper();
     	User user = objectMapper.convertValue(param, User.class);
     	User checkedUser = userService.existCheck(user);
     	
     	if(checkedUser != null) {
     		userService.deleteUser(checkedUser);
+    		session.invalidate();
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
     	else {
