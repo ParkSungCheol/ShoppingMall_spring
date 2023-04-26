@@ -14,4 +14,5 @@ public interface UserMapper {
     User existCheck(@Param("user") User user);
     void insertUser(@Param("user") User user);
     void updateUser(@Param("user") User user);
+    void deleteUser(@Param("user") User user);
 }

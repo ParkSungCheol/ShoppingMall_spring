@@ -236,4 +236,20 @@ public class UserController {
         //MAPPER.INSERTUSER
         return new ResponseEntity<>("ok", HttpStatus.OK); 
     }
+    
+    @GetMapping("/deleteUser")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> deleteUser(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	User user = objectMapper.convertValue(param, User.class);
+    	User checkedUser = userService.existCheck(user);
+    	
+    	if(checkedUser != null) {
+    		userService.deleteUser(checkedUser);
+    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    	}
+    	else {
+    		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    	}
+    }
 }

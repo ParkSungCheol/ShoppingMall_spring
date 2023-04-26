@@ -93,4 +93,11 @@
 		</if>
 		WHERE id = #{user.id}
 	</update>
+	
+	<delete id="deleteUser">
+        DELETE
+        FROM
+            user
+        WHERE id = #{user.id}
+    </delete>
 </mapper>

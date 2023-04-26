@@ -74,4 +74,8 @@ public class UserService {
     public void updateUser(User user) {
     	userMapper.updateUser(user);
     }
+    
+    public void deleteUser(User user) {
+    	userMapper.deleteUser(user);
+    }
 }
