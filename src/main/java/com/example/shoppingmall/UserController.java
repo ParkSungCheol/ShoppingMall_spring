@@ -49,9 +49,12 @@ public class UserController {
     public ResponseEntity<?> loginCheck(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
     	HttpSession session = request.getSession();
-    	Cookie cookie = new Cookie("JSESSIONID", session.getId());
-    	cookie.setMaxAge(Integer.MAX_VALUE);
-    	response.addCookie(cookie);
+    	String selected = param.get("selected");
+    	if(selected.equals("1")) {
+    		Cookie cookie = new Cookie("JSESSIONID", session.getId());
+        	cookie.setMaxAge(Integer.MAX_VALUE);
+        	response.addCookie(cookie);
+    	}
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	User user = objectMapper.convertValue(param, User.class);
