@@ -211,7 +211,7 @@ public class UserController {
      	String addressDetail2 = param.get("addressDetail2");
      	String email = param.get("email");
      	String phone = param.get("phone");
-     	String beforePwd = param.get("beforePwd");
+     	String beforePwd = param.get("beforePwd") != null && param.get("beforePwd").length() == 1 ? param.get("beforePwd") : null;
      	String afterPwd = param.get("afterPwd");
     	
      	User user = new User();
