@@ -153,7 +153,7 @@ public class UserController {
     	User checkedUser = userService.existCheck(user);
     	
     	if(checkedUser == null) {
-    		return new ResponseEntity<>("ok", HttpStatus.OK); 
+    		return new ResponseEntity<>(user, HttpStatus.OK); 
     	}
     	else {
     		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
