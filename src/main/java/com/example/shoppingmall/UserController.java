@@ -152,7 +152,7 @@ public class UserController {
     	User user = objectMapper.convertValue(param, User.class);
     	User checkedUser = userService.existCheck(user);
     	
-    	if(checkedUser == null) {
+    	if(checkedUser != null) {
     		return new ResponseEntity<>(user, HttpStatus.OK); 
     	}
     	else {
