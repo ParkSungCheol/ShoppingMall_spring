@@ -156,7 +156,7 @@ public class UserController {
     		return new ResponseEntity<>(user, HttpStatus.OK); 
     	}
     	else {
-    		return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+    		return new ResponseEntity<>("notFound", HttpStatus.ACCEPTED);
     	}
     }
     
