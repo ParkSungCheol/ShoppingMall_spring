@@ -247,6 +247,18 @@ public class UserController {
         return new ResponseEntity<>("ok", HttpStatus.OK); 
     }
     
+    @GetMapping("/updatePwd")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> updatePwd(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	User user = objectMapper.convertValue(param, User.class);
+        userService.updateUser(user);
+        
+        //MAPPER.INSERTUSER
+        return new ResponseEntity<>("ok", HttpStatus.OK); 
+    }
+    
     @GetMapping("/deleteUser")
     @Transactional(value="txManager")
     public ResponseEntity<?> deleteUser(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) throws Exception {
