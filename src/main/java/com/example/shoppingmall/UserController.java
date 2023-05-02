@@ -253,6 +253,9 @@ public class UserController {
 
     	ObjectMapper objectMapper = new ObjectMapper();
     	User user = objectMapper.convertValue(param, User.class);
+    	User checkedUser = userService.existCheck(user);
+    	
+    	user.setPwd(encryptService.encrypt(user.getPwd() + checkedUser.getSalt()));
         userService.updateUser(user);
         
         //MAPPER.INSERTUSER
