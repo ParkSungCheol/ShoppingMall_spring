@@ -23,7 +23,7 @@ public class Goods {
 	@JsonProperty
     private float discountrate;
 	@JsonProperty
-    private int deliveryfee;
+    private Integer deliveryfee;
 	@JsonProperty
     private String sellid;
 	@JsonProperty
@@ -68,10 +68,10 @@ public class Goods {
 	public void setDiscountrate(float discountrate) {
 		this.discountrate = discountrate;
 	}
-	public int getDeliveryfee() {
+	public Integer getDeliveryfee() {
 		return deliveryfee;
 	}
-	public void setDeliveryfee(int deliveryfee) {
+	public void setDeliveryfee(Integer deliveryfee) {
 		this.deliveryfee = deliveryfee;
 	}
 	public String getSellid() {
