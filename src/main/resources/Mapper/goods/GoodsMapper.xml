@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shoppingmall.Mapper.GoodsMapper">
 
-    <select id="getGoodsList" resultType="com.example.shoppingmall.Domain.Goods">
+	<select id="getGoodsList" parameterType="com.example.shoppingmall.Domain.SearchDto" resultType="com.example.shoppingmall.Domain.Goods">
         SELECT
             rownum
              ,	name
@@ -19,6 +19,16 @@
             goods
         ORDER by
             rownum ASC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+    
+    
+    <!-- 게시글 수 카운팅 -->
+    <select id="count" parameterType="com.example.shoppingmall.Domain.SearchDto" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            goods
     </select>
     
     <delete id="deleteGoodsList">
