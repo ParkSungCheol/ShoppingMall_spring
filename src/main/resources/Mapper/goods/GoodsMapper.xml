@@ -26,7 +26,7 @@
     <!-- 게시글 수 카운팅 -->
     <select id="count" parameterType="com.example.shoppingmall.Domain.SearchDto" resultType="int">
         SELECT
-            COUNT(*)
+            COUNT(1)
         FROM
             goods
     </select>
