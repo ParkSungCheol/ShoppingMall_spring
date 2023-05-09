@@ -5,8 +5,10 @@ public class SearchDto {
     private int page;             // 현재 페이지 번호
     private int recordSize;       // 페이지당 출력할 데이터 개수
     private int pageSize;         // 화면 하단에 출력할 페이지 사이즈
-    private String keyword;       // 검색 키워드
-    private String searchType;    // 검색 유형
+    private String searchValue;       // 검색 키워드
+    private Integer searchMinPrice;    // 검색 최소가격
+    private Integer searchMaxPrice;    // 검색 최소가격
+    private String orderBy;			  // 검색 정렬
     private Pagination pagination;    // 페이지네이션 정보
 
     public SearchDto() {
@@ -39,20 +41,36 @@ public class SearchDto {
 		this.pageSize = pageSize;
 	}
 
-	public String getKeyword() {
-		return keyword;
+	public String getSearchValue() {
+		return searchValue;
 	}
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
+	public void setSearchValue(String searchValue) {
+		this.searchValue = searchValue;
 	}
 
-	public String getSearchType() {
-		return searchType;
+	public Integer getSearchMinPrice() {
+		return searchMinPrice;
 	}
 
-	public void setSearchType(String searchType) {
-		this.searchType = searchType;
+	public void setSearchMinPrice(Integer searchMinPrice) {
+		this.searchMinPrice = searchMinPrice;
+	}
+
+	public Integer getSearchMaxPrice() {
+		return searchMaxPrice;
+	}
+
+	public void setSearchMaxPrice(Integer searchMaxPrice) {
+		this.searchMaxPrice = searchMaxPrice;
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 
 	public Pagination getPagination() {

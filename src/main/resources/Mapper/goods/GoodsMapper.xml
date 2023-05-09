@@ -17,8 +17,29 @@
              ,  detail
         FROM
             goods
+        WHERE 1=1
+        <if test='searchValue != null and !searchValue.equals("")'>
+        	AND INSTR(name, #{searchValue}) &gt; 0
+        </if>
+        <if test="searchMinPrice != null">
+        	AND price &gt; #{searchMinPrice}
+        </if>
+        <if test="searchMaxPrice != null">
+        	AND price &lt; #{searchMaxPrice}
+        </if>
         ORDER by
-            rownum ASC
+        <if test='orderBy == null or orderBy.equals("")'>
+        	rownum DESC
+        </if>
+       	<if test='orderBy.equals("priceASC")'>
+        	price ASC
+        </if>
+        <if test='orderBy.equals("priceDESC")'>
+        	price DESC
+        </if>
+        <if test='orderBy.equals("dateDESC")'>
+        	date DESC
+        </if>
         LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
     
