@@ -37,6 +37,9 @@
         <if test='orderBy != null and orderBy.equals("priceDESC")'>
         	price DESC
         </if>
+        <if test='orderBy != null and orderBy.equals("dateASC")'>
+        	date ASC
+        </if>
         <if test='orderBy != null and orderBy.equals("dateDESC")'>
         	date DESC
         </if>
