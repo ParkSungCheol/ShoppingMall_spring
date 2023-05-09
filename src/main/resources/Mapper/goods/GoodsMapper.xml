@@ -43,7 +43,7 @@
         <if test='orderBy != null and orderBy.equals("dateDESC")'>
         	date DESC
         </if>
-        LIMIT #{pagination.limitStart}, #{recordSize} 
+        LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
     
     
