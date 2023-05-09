@@ -29,7 +29,7 @@
         </if>
         ORDER by
         <if test='orderBy == null or orderBy.equals("")'>
-        	rownum DESC
+        	date DESC
         </if>
        	<if test='orderBy != null and orderBy.equals("priceASC")'>
         	price ASC
