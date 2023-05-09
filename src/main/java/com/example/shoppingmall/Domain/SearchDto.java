@@ -12,7 +12,7 @@ public class SearchDto {
     public SearchDto() {
         this.page = 1;
         this.recordSize = 8;
-        this.pageSize = 10;
+        this.pageSize = 5;
     }
 
 	public int getPage() {
