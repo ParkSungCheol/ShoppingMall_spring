@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shoppingmall.Mapper.GoodsMapper">
 
-    <select id="getGoodsList" resultType="com.example.shoppingmall.Domain.Goods">
+	<select id="getGoodsList" parameterType="com.example.shoppingmall.Domain.SearchDto" resultType="com.example.shoppingmall.Domain.Goods">
         SELECT
             rownum
              ,	name
@@ -17,8 +17,52 @@
              ,  detail
         FROM
             goods
+        WHERE 1=1
+        <if test='searchValue != null and !searchValue.equals("")'>
+        	AND INSTR(name, #{searchValue}) &gt; 0
+        </if>
+        <if test="searchMinPrice != null">
+        	AND price &gt; #{searchMinPrice}
+        </if>
+        <if test="searchMaxPrice != null">
+        	AND price &lt; #{searchMaxPrice}
+        </if>
         ORDER by
-            rownum ASC
+        <if test='orderBy == null or orderBy.equals("")'>
+        	date DESC
+        </if>
+       	<if test='orderBy != null and orderBy.equals("priceASC")'>
+        	price ASC
+        </if>
+        <if test='orderBy != null and orderBy.equals("priceDESC")'>
+        	price DESC
+        </if>
+        <if test='orderBy != null and orderBy.equals("dateASC")'>
+        	date ASC
+        </if>
+        <if test='orderBy != null and orderBy.equals("dateDESC")'>
+        	date DESC
+        </if>
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+    
+    
+    <!-- 게시글 수 카운팅 -->
+    <select id="count" parameterType="com.example.shoppingmall.Domain.SearchDto" resultType="int">
+        SELECT
+            COUNT(1)
+        FROM
+            goods
+        WHERE 1=1
+        <if test='searchValue != null and !searchValue.equals("")'>
+        	AND INSTR(name, #{searchValue}) &gt; 0
+        </if>
+        <if test="searchMinPrice != null">
+        	AND price &gt; #{searchMinPrice}
+        </if>
+        <if test="searchMaxPrice != null">
+        	AND price &lt; #{searchMaxPrice}
+        </if>
     </select>
     
     <delete id="deleteGoodsList">
