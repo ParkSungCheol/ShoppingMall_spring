@@ -5,9 +5,8 @@ import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.ValueCount;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,7 +22,7 @@ import com.example.shoppingmall.Domain.SearchDto;
 @Service
 public class ElasticsearchService {
     private final ElasticsearchOperations elasticsearchOperations;
-
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     public ElasticsearchService(ElasticsearchOperations elasticsearchOperations) {
         this.elasticsearchOperations = elasticsearchOperations;
@@ -51,6 +50,7 @@ public class ElasticsearchService {
     		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
     	}
 
+    	logger.info("getLimitStart : " + params.getPagination().getLimitStart() + ", getRecordSize : " + params.getRecordSize());
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
