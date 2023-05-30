@@ -106,18 +106,12 @@ public class ElasticsearchService {
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery);
 
-    	// Aggregation을 사용하여 COUNT 집계 생성
-    	searchQuery.addAggregation(AggregationBuilders.count("count").field("id"));
-
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
 
     	// 쿼리 실행
-    	SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQueryComplete, Goods.class);
+    	long countAggregation = elasticsearchOperations.count(searchQueryComplete, Goods.class);
 
-    	// COUNT 결과 가져오기
-    	Aggregations aggregations = (Aggregations) searchHits.getAggregations();
-    	ValueCount countAggregation = aggregations.get("count");
-    	return (int) countAggregation.getValue();
+    	return (int) countAggregation;
     }
 }
