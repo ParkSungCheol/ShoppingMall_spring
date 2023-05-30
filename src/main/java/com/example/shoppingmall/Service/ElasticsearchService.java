@@ -29,15 +29,16 @@ public class ElasticsearchService {
     }
 
     public List<Goods> getDataFromElasticsearch(SearchDto params) {
-    	String queryString = "{\"query\": {\r\n"
-    			+ "     \"bool\": { \r\n"
-    			+ "       \"should\": [ \r\n"
-    			+ "          { \"match\": { \"name\": \"틴캐시 5만\" } },\r\n"
-    			+ "          { \"match\": { \"name.nori\": \"틴캐시 5만\" } },\r\n"
-    			+ "          { \"match\": { \"name.ngram\": \"틴캐시 5만\" } }\r\n"
-    			+ "       ]\r\n"
-    			+ "     }\r\n"
-    			+ "  }}";
+    	String queryString = "{\"query\": {"
+    		    + "     \"bool\": {"
+    		    + "       \"should\": ["
+    		    + "          { \"match\": { \"name\": \"틴캐시 5만\" } },"
+    		    + "          { \"match\": { \"name.nori\": \"틴캐시 5만\" } },"
+    		    + "          { \"match\": { \"name.ngram\": \"틴캐시 5만\" } }"
+    		    + "       ]"
+    		    + "     }"
+    		    + "  }}";
+
         StringQuery stringQuery = new StringQuery(queryString);
 
         SearchHits<Goods> searchHits = elasticsearchOperations.search(stringQuery, Goods.class);
