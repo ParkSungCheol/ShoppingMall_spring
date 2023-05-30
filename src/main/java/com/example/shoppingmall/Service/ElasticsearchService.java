@@ -111,6 +111,7 @@ public class ElasticsearchService {
     	// 쿼리 실행
     	long countAggregation = elasticsearchOperations.count(searchQueryComplete, Goods.class);
 
+    	logger.info("countAggregation : " + countAggregation);
     	return (int) countAggregation;
     }
 }
