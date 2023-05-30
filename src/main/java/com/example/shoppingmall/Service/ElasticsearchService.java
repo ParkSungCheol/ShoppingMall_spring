@@ -34,9 +34,9 @@ public class ElasticsearchService {
 
     	if(params.getSearchValue() != null && !params.getSearchValue().equals("")) {
 	    	// MatchQueryBuilder를 사용하여 should 절에 조건 추가
-	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", "틴캐시 5만");
-	    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", "틴캐시 5만");
-	    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", "틴캐시 5만");
+	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", params.getSearchValue());
+	    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", params.getSearchValue());
+	    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", params.getSearchValue());
 	
 	    	boolQuery.should(matchQuery1);
 	    	boolQuery.should(matchQuery2);
@@ -85,9 +85,9 @@ public class ElasticsearchService {
 
     	if(params.getSearchValue() != null && !params.getSearchValue().equals("")) {
 	    	// MatchQueryBuilder를 사용하여 should 절에 조건 추가
-	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", "틴캐시 5만");
-	    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", "틴캐시 5만");
-	    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", "틴캐시 5만");
+	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", params.getSearchValue());
+	    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", params.getSearchValue());
+	    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", params.getSearchValue());
 	
 	    	boolQuery.should(matchQuery1);
 	    	boolQuery.should(matchQuery2);
