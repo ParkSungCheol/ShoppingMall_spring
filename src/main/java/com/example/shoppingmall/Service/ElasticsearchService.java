@@ -50,11 +50,10 @@ public class ElasticsearchService {
     		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
     	}
 
-    	logger.info("getLimitStart : " + params.getPagination().getLimitStart() + ", getRecordSize : " + params.getRecordSize());
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withPageable(PageRequest.of(params.getPagination().getLimitStart(), params.getRecordSize()));
+    	        .withPageable(PageRequest.of(params.getPage(), params.getRecordSize()));
     	
     	// ORDER BY 절 추가
     	if (params.getOrderBy() == null || params.getOrderBy().equals("")) {
