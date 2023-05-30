@@ -11,16 +11,10 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 @Configuration
 public class ElasticsearchConfig {
-    @Value("${elasticsearch.cluster-name}")
-    private String clusterName;
-
-    @Value("${elasticsearch.cluster-nodes}")
-    private String clusterNodes;
-
     @Bean
     public ElasticsearchOperations elasticsearchOperations() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(clusterNodes)
+                .connectedTo("http://ec2-54-180-119-204.ap-northeast-2.compute.amazonaws.com:3308")
                 .build();
 
         return new ElasticsearchRestTemplate((RestHighLevelClient) RestClients.create(clientConfiguration));
