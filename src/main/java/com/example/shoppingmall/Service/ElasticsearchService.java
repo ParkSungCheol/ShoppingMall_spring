@@ -3,7 +3,6 @@ package com.example.shoppingmall.Service;
 import java.util.ArrayList;
 import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
