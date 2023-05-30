@@ -83,6 +83,7 @@ public class ElasticsearchService {
     	// BoolQueryBuilder 생성
     	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
+    	logger.info("getSearchValue : " + params.getSearchValue());
     	if(params.getSearchValue() != null && !params.getSearchValue().equals("")) {
 	    	// MatchQueryBuilder를 사용하여 should 절에 조건 추가
 	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", params.getSearchValue());
