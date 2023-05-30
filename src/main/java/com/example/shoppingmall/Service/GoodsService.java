@@ -19,6 +19,9 @@ public class GoodsService {
 
 	@Autowired
     private GoodsMapper goodsMapper;
+	@Autowired
+	private ElasticsearchService elasticsearchService;
+	
 	/**
      * 게시글 리스트 조회
      * @param params - search conditions
@@ -37,7 +40,7 @@ public class GoodsService {
         params.setPagination(pagination);
 
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
-        List<Goods> list = goodsMapper.getGoodsList(params);
+        List<Goods> list = elasticsearchService.getDataFromElasticsearch(params);
         return new PagingResponse<>(list, pagination, params);
     }
     

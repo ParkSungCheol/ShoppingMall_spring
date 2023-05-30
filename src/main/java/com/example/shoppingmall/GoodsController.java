@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.PagingResponse;
 import com.example.shoppingmall.Domain.SearchDto;
+import com.example.shoppingmall.Service.ElasticsearchService;
 import com.example.shoppingmall.Service.GoodsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
