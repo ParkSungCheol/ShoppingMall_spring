@@ -17,7 +17,7 @@ public class ElasticsearchConfig {
                 .connectedTo("http://ec2-54-180-119-204.ap-northeast-2.compute.amazonaws.com:3308")
                 .build();
 
-        return new ElasticsearchRestTemplate((RestHighLevelClient) RestClients.create(clientConfiguration));
+        return new ElasticsearchRestTemplate(RestClients.create(clientConfiguration).rest());
     }
 }
 
