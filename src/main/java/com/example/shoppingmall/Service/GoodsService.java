@@ -30,7 +30,7 @@ public class GoodsService {
     public PagingResponse<Goods> getGoodsList(final SearchDto params) {
 
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
-        int count = goodsMapper.count(params);
+        int count = elasticsearchService.count(params);
         if (count < 1) {
             return new PagingResponse<>(Collections.emptyList(), null, null);
         }
