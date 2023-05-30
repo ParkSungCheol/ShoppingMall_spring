@@ -33,14 +33,12 @@ public class ElasticsearchService {
     	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
     	if(params.getSearchValue() != null && !params.getSearchValue().equals("")) {
-	    	// MatchQueryBuilder를 사용하여 should 절에 조건 추가
-	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", params.getSearchValue());
-	    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", params.getSearchValue());
-	    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", params.getSearchValue());
-	
-	    	boolQuery.should(matchQuery1);
-	    	boolQuery.should(matchQuery2);
-	    	boolQuery.should(matchQuery3);
+    		// must 조건 추가
+    		BoolQueryBuilder mustQuery = QueryBuilders.boolQuery();
+    		mustQuery.should(QueryBuilders.matchQuery("name", params.getSearchValue()));
+    		mustQuery.should(QueryBuilders.matchQuery("name.nori", params.getSearchValue()));
+    		mustQuery.should(QueryBuilders.matchQuery("name.ngram", params.getSearchValue()));
+    		boolQuery.must(mustQuery);
     	}
     	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
     	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
@@ -84,14 +82,12 @@ public class ElasticsearchService {
     	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
     	if(params.getSearchValue() != null && !params.getSearchValue().equals("")) {
-	    	// MatchQueryBuilder를 사용하여 should 절에 조건 추가
-	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", params.getSearchValue());
-	    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", params.getSearchValue());
-	    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", params.getSearchValue());
-	
-	    	boolQuery.should(matchQuery1);
-	    	boolQuery.should(matchQuery2);
-	    	boolQuery.should(matchQuery3);
+    		// must 조건 추가
+    		BoolQueryBuilder mustQuery = QueryBuilders.boolQuery();
+    		mustQuery.should(QueryBuilders.matchQuery("name", params.getSearchValue()));
+    		mustQuery.should(QueryBuilders.matchQuery("name.nori", params.getSearchValue()));
+    		mustQuery.should(QueryBuilders.matchQuery("name.ngram", params.getSearchValue()));
+    		boolQuery.must(mustQuery);
 	    	
 	    	logger.info("getSearchValue : " + params.getSearchValue());
     	}
