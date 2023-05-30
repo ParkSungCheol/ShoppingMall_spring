@@ -2,13 +2,12 @@ package com.example.shoppingmall.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -31,21 +30,46 @@ public class ElasticsearchService {
     	// BoolQueryBuilder 생성
     	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
-    	// MatchQueryBuilder를 사용하여 should 절에 조건 추가
-    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", "틴캐시 5만");
-    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", "틴캐시 5만");
-    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", "틴캐시 5만");
-
-    	boolQuery.should(matchQuery1);
-    	boolQuery.should(matchQuery2);
-    	boolQuery.should(matchQuery3);
+    	if(params.getSearchValue() != null && !params.getSearchValue().equals("")) {
+	    	// MatchQueryBuilder를 사용하여 should 절에 조건 추가
+	    	MatchQueryBuilder matchQuery1 = QueryBuilders.matchQuery("name", "틴캐시 5만");
+	    	MatchQueryBuilder matchQuery2 = QueryBuilders.matchQuery("name.nori", "틴캐시 5만");
+	    	MatchQueryBuilder matchQuery3 = QueryBuilders.matchQuery("name.ngram", "틴캐시 5만");
+	
+	    	boolQuery.should(matchQuery1);
+	    	boolQuery.should(matchQuery2);
+	    	boolQuery.should(matchQuery3);
+    	}
+    	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
+    	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").gt(params.getSearchMinPrice()));
+    	}
+    	if(params.getSearchMaxPrice() != null && params.getSearchMaxPrice() > 0) {
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
+    	}
 
     	// NativeSearchQuery를 사용하여 쿼리 실행
-    	NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+    	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .build();
+    	        .withPageable(PageRequest.of(params.getPagination().getLimitStart(), params.getRecordSize()));
+    	
+    	// ORDER BY 절 추가
+    	if (params.getOrderBy() == null || params.getOrderBy().equals("")) {
+    		searchQuery.withSort(Sort.by(Sort.Direction.DESC, "insertion_time"));
+    	} else if (params.getOrderBy().equals("priceASC")) {
+    		searchQuery.withSort(Sort.by(Sort.Direction.ASC, "price"));
+    	} else if (params.getOrderBy().equals("priceDESC")) {
+    		searchQuery.withSort(Sort.by(Sort.Direction.DESC, "price"));
+    	} else if (params.getOrderBy().equals("dateASC")) {
+    		searchQuery.withSort(Sort.by(Sort.Direction.ASC, "insertion_time"));
+    	} else if (params.getOrderBy().equals("dateDESC")) {
+    		searchQuery.withSort(Sort.by(Sort.Direction.DESC, "insertion_time"));
+    	}
 
-        SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQuery, Goods.class);
+    	// NativeSearchQuery를 사용하여 쿼리 생성
+    	NativeSearchQuery searchQueryComplete = searchQuery.build();
+    	
+        SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQueryComplete, Goods.class);
         List<Goods> dataList = new ArrayList<>();
         for (SearchHit<Goods> searchHit : searchHits) {
             dataList.add(searchHit.getContent());
