@@ -53,7 +53,7 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withPageable(PageRequest.of(params.getPage(), params.getRecordSize()));
+    	        .withPageable(PageRequest.of(params.getPage() - 1, params.getRecordSize()));
     	
     	// ORDER BY 절 추가
     	if (params.getOrderBy() == null || params.getOrderBy().equals("")) {
