@@ -68,6 +68,8 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
     	
+    	logger.info("searchQuery.getQuery().toString() : " + searchQueryComplete.getQuery().toString());
+    	
         SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQueryComplete, Goods.class);
         List<Goods> dataList = new ArrayList<>();
         for (SearchHit<Goods> searchHit : searchHits) {
@@ -104,8 +106,6 @@ public class ElasticsearchService {
 
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
-    	
-    	logger.info("searchQuery.getQuery().toString() : " + searchQueryComplete.getQuery().toString());
     	
     	// 쿼리 실행
     	long countAggregation = elasticsearchOperations.count(searchQueryComplete, Goods.class);
