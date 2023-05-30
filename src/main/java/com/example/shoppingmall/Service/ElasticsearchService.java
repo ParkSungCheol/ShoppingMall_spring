@@ -55,7 +55,7 @@ public class ElasticsearchService {
     	
     	// ORDER BY 절 추가
     	if (params.getOrderBy() == null || params.getOrderBy().equals("")) {
-    		searchQuery.withSort(Sort.by(Sort.Direction.DESC, "insertion_time"));
+    		searchQuery.withSort(Sort.by(Sort.Direction.DESC, "_score"));
     	} else if (params.getOrderBy().equals("priceASC")) {
     		searchQuery.withSort(Sort.by(Sort.Direction.ASC, "price"));
     	} else if (params.getOrderBy().equals("priceDESC")) {
