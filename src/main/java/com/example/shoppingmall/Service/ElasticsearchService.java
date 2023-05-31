@@ -97,7 +97,7 @@ public class ElasticsearchService {
     	List<Goods> dataList = new ArrayList<>();
     	ObjectMapper objectMapper = new ObjectMapper();
     	for (org.elasticsearch.search.SearchHit searchHit : searchResponse.getHits().getHits()) {
-    	    Goods goods = objectMapper.convertValue(searchHit.getSourceAsString(), Goods.class);
+    	    Goods goods = objectMapper.readValue(searchHit.getSourceAsString(), Goods.class);
     	    dataList.add(goods);
     	}
 
