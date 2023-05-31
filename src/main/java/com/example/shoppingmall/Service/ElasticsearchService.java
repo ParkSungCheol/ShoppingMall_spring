@@ -1,9 +1,18 @@
 package com.example.shoppingmall.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.metrics.Max;
+import org.elasticsearch.search.aggregations.metrics.MaxAggregationBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +36,7 @@ public class ElasticsearchService {
         this.elasticsearchOperations = elasticsearchOperations;
     }
 
-    public List<Goods> getDataFromElasticsearch(SearchDto params) {
+    public List<Goods> getDataFromElasticsearch(SearchDto params, String date) {
     	// BoolQueryBuilder 생성
     	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
@@ -47,6 +56,9 @@ public class ElasticsearchService {
     		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
     	}
 
+    	// insertion_time 조건 추가
+    	boolQuery.filter(QueryBuilders.matchQuery("insertion_time", date));
+    	
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
@@ -78,7 +90,8 @@ public class ElasticsearchService {
         return dataList;
     }
     
-    public int count(SearchDto params) {
+    public int count(SearchDto params, String date) {
+    	
     	// BoolQueryBuilder 생성
     	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
@@ -100,6 +113,9 @@ public class ElasticsearchService {
     		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
     	}
     	
+    	// insertion_time 조건 추가
+    	boolQuery.filter(QueryBuilders.matchQuery("insertion_time", date));
+    	
     	// NativeSearchQueryBuilder를 사용하여 쿼리 생성
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery);
@@ -112,5 +128,46 @@ public class ElasticsearchService {
     	if(countAggregation > 10000) { countAggregation = 10000; }
     	logger.info("countAggregation : " + countAggregation);
     	return (int) countAggregation;
+    }
+    
+    public String getDate(SearchDto params) {
+    	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+
+    	if(params.getSearchValue() != null && !params.getSearchValue().equals("")) {
+    		// must 조건 추가
+    		BoolQueryBuilder mustQuery = QueryBuilders.boolQuery();
+    		mustQuery.should(QueryBuilders.matchQuery("name", params.getSearchValue()));
+    		mustQuery.should(QueryBuilders.matchQuery("name.nori", params.getSearchValue()));
+    		mustQuery.should(QueryBuilders.matchQuery("name.ngram", params.getSearchValue()));
+    		boolQuery.must(mustQuery);
+    	}
+    	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
+    	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").gt(params.getSearchMinPrice()));
+    	}
+    	if(params.getSearchMaxPrice() != null && params.getSearchMaxPrice() > 0) {
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
+    	}
+
+    	// NativeSearchQuery를 사용하여 쿼리 실행
+    	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
+    	        .withQuery(boolQuery)
+    	        .withPageable(PageRequest.of(0, 1));
+    	
+    	searchQuery.withSort(Sort.by(Sort.Direction.DESC, "insertion_time"));
+
+    	// NativeSearchQuery를 사용하여 쿼리 생성
+    	NativeSearchQuery searchQueryComplete = searchQuery.build();
+    	
+    	logger.info("searchQuery.getQuery().toString() : " + searchQueryComplete.getQuery().toString());
+    	
+        SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQueryComplete, Goods.class);
+        List<Goods> dataList = new ArrayList<>();
+        for (SearchHit<Goods> searchHit : searchHits) {
+            dataList.add(searchHit.getContent());
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
+        return extractedDate;
     }
 }

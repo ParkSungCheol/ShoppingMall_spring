@@ -30,7 +30,8 @@ public class GoodsService {
     public PagingResponse<Goods> getGoodsList(final SearchDto params) {
 
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
-        int count = elasticsearchService.count(params);
+    	String date = elasticsearchService.getDate(params);
+        int count = elasticsearchService.count(params, date);
         if (count < 1) {
             return new PagingResponse<>(Collections.emptyList(), null, null);
         }
@@ -40,7 +41,7 @@ public class GoodsService {
         params.setPagination(pagination);
 
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
-        List<Goods> list = elasticsearchService.getDataFromElasticsearch(params);
+        List<Goods> list = elasticsearchService.getDataFromElasticsearch(params, date);
         return new PagingResponse<>(list, pagination, params);
     }
     
