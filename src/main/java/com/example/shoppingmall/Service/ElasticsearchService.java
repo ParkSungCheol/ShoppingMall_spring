@@ -153,7 +153,7 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withPageable(PageRequest.of(0, 1));
+    	        .withPageable(PageRequest.of(1, 8));
     	
     	searchQuery.withSort(Sort.by(Sort.Direction.DESC, "insertion_time"));
 
