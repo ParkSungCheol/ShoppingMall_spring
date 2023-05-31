@@ -1,18 +1,9 @@
 package com.example.shoppingmall.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.metrics.Max;
-import org.elasticsearch.search.aggregations.metrics.MaxAggregationBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,7 +117,7 @@ public class ElasticsearchService {
     	
     	// 쿼리 실행
     	long countAggregation = elasticsearchOperations.count(searchQueryComplete, Goods.class);
-    	if(countAggregation > 10000) { countAggregation = 10000; }
+    	if(countAggregation > 800) { countAggregation = 800; }
     	logger.info("countAggregation : " + countAggregation);
     	return (int) countAggregation;
     }
