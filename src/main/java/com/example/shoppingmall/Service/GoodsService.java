@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,8 +27,9 @@ public class GoodsService {
      * 게시글 리스트 조회
      * @param params - search conditions
      * @return list & pagination information
+	 * @throws IOException 
      */
-    public PagingResponse<Goods> getGoodsList(final SearchDto params) {
+    public PagingResponse<Goods> getGoodsList(final SearchDto params) throws IOException {
 
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
     	String date = elasticsearchService.getDate(params);

@@ -1,5 +1,6 @@
 package com.example.shoppingmall;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class GoodsController {
 
 	@GetMapping("/goods")
     @Transactional(value="txManager")
-    public PagingResponse<Goods> getGoodsList (@RequestParam Map<String, String> param) {
+    public PagingResponse<Goods> getGoodsList (@RequestParam Map<String, String> param) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
     	SearchDto searchDto = objectMapper.convertValue(param, SearchDto.class);
         return goodsService.getGoodsList(searchDto);
