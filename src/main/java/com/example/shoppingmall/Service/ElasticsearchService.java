@@ -1,5 +1,6 @@
 package com.example.shoppingmall.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -158,10 +159,9 @@ public class ElasticsearchService {
         for (SearchHit<Goods> searchHit : searchHits) {
             dataList.add(searchHit.getContent());
         }
-        logger.info("searchHits.800 : " + searchHits.getSearchHit(801));
         logger.info("dataList.size : " + dataList.size());
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
-        return "2023-05-31";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
+        return extractedDate;
     }
 }
