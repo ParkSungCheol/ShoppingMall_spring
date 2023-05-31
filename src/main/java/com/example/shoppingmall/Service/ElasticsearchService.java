@@ -161,7 +161,8 @@ public class ElasticsearchService {
         }
         logger.info("dataList.size : " + dataList.size());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
-        return extractedDate;
+        logger.info(dataList.get(0).toString());
+//        String extractedDate = dateFormat.format(dataList.get(0).toString());
+        return "2023-05-31";
     }
 }

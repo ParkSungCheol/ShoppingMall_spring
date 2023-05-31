@@ -99,5 +99,12 @@ public class Goods {
     public void setSellId(String sellId) {
         this.sellId = sellId;
     }
+
+	@Override
+	public String toString() {
+		return "Goods [name=" + name + ", timestamp=" + timestamp + ", detail=" + detail + ", image=" + image
+				+ ", insertionTime=" + insertionTime + ", isDeleted=" + isDeleted + ", modificationTime="
+				+ modificationTime + ", price=" + price + ", sellId=" + sellId + "]";
+	}
 }
 
