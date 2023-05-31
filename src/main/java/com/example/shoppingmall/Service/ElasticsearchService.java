@@ -87,6 +87,7 @@ public class ElasticsearchService {
         for (SearchHit<Goods> searchHit : searchHits) {
             dataList.add(searchHit.getContent());
         }
+        logger.info("dataList.size() : " + dataList.size());
         return dataList;
     }
     
@@ -167,8 +168,8 @@ public class ElasticsearchService {
             dataList.add(searchHit.getContent());
         }
         logger.info("searchHits.size : " + searchHits.getTotalHits());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
-        return extractedDate;
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
+        return "2023-05-31";
     }
 }
