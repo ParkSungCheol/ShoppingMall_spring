@@ -3,6 +3,9 @@ package com.example.shoppingmall.Domain;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 @Document(indexName = "goods")
@@ -10,6 +13,7 @@ public class Goods {
     private String name;
 
     @Field(type = FieldType.Date, name = "@timestamp")
+    @JsonProperty("@timestamp")
     private Date timestamp;
 
     private String detail;
@@ -17,28 +21,35 @@ public class Goods {
     private String image;
 
     @Field(type = FieldType.Date, name = "insertion_time")
+    @JsonProperty("insertion_time")
     private Date insertionTime;
 
     @Field(name = "is_deleted")
+    @JsonProperty("is_deleted")
     private Long isDeleted;
 
     @Field(type = FieldType.Date, name = "modification_time")
+    @JsonProperty("modification_time")
     private Date modificationTime;
 
     private Long price;
 
     @Field(name = "sellid")
+    @JsonProperty("sellid")
     private String sellId;
 
     private Integer amount;
 
     @Field(name = "discountamount")
+    @JsonProperty("discountamount")
     private Integer discountAmount;
 
     @Field(name = "discountrate")
+    @JsonProperty("discountrate")
     private Double discountRate;
 
     @Field(name = "deliveryfee")
+    @JsonProperty("deliveryfee")
     private Integer deliveryFee;
 
 	public String getName() {
