@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,9 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withPageable(PageRequest.of(params.getPage() - 1, params.getRecordSize()));
+    	        .withPageable(PageRequest.of(params.getPage() - 1, params.getRecordSize()))
+    	        .addAggregation(AggregationBuilders.terms("unique_docs")
+                        .script(new Script("doc['price'].value + '|' + doc['sellid.keyword'].value + '|' + doc['name.keyword'].value")));
     	
     	// ORDER BY 절 추가
     	if (params.getOrderBy() == null || params.getOrderBy().equals("")) {
@@ -112,7 +116,9 @@ public class ElasticsearchService {
     	
     	// NativeSearchQueryBuilder를 사용하여 쿼리 생성
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
-    	        .withQuery(boolQuery);
+    	        .withQuery(boolQuery)
+    	        .addAggregation(AggregationBuilders.terms("unique_docs")
+                        .script(new Script("doc['price'].value + '|' + doc['sellid.keyword'].value + '|' + doc['name.keyword'].value")));
 
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
