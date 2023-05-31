@@ -28,6 +28,14 @@ public class Goods {
 
     private String sellId;
 
+    private Integer amount;
+
+    private Integer discountAmount;
+
+    private Double discountRate;
+
+    private Integer deliveryFee;
+
     public String getName() {
         return name;
     }
@@ -100,11 +108,54 @@ public class Goods {
         this.sellId = sellId;
     }
 
-	@Override
-	public String toString() {
-		return "Goods [name=" + name + ", timestamp=" + timestamp + ", detail=" + detail + ", image=" + image
-				+ ", insertionTime=" + insertionTime + ", isDeleted=" + isDeleted + ", modificationTime="
-				+ modificationTime + ", price=" + price + ", sellId=" + sellId + "]";
-	}
-}
+    public Integer getAmount() {
+        return amount;
+    }
 
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Integer getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Integer discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public Double getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(Double discountRate) {
+        this.discountRate = discountRate;
+    }
+
+    public Integer getDeliveryFee() {
+        return deliveryFee;
+    }
+
+    public void setDeliveryFee(Integer deliveryFee) {
+        this.deliveryFee = deliveryFee;
+    }
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "name='" + name + '\'' +
+                ", timestamp=" + timestamp +
+                ", detail='" + detail + '\'' +
+                ", image='" + image + '\'' +
+                ", insertionTime=" + insertionTime +
+                ", isDeleted=" + isDeleted +
+                ", modificationTime=" + modificationTime +
+                ", price=" + price +
+                ", sellId='" + sellId + '\'' +
+                ", amount=" + amount +
+                ", discountAmount=" + discountAmount +
+                ", discountRate=" + discountRate +
+                ", deliveryFee=" + deliveryFee +
+                '}';
+    }
+}
