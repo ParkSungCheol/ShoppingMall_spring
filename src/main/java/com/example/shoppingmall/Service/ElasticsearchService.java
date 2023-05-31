@@ -109,7 +109,7 @@ public class ElasticsearchService {
     	
     	// 쿼리 실행
     	long countAggregation = elasticsearchOperations.count(searchQueryComplete, Goods.class);
-    	//if(countAggregation > 10000) { countAggregation = 10000; }
+    	if(countAggregation > 10000) { countAggregation = 10000; }
     	logger.info("countAggregation : " + countAggregation);
     	return (int) countAggregation;
     }
