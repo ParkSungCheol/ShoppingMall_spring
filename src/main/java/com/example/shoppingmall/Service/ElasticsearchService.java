@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -13,7 +14,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.aggregations.metrics.ParsedTopHits;
@@ -30,6 +30,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
+
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.SearchDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,21 +106,12 @@ public class ElasticsearchService {
     	ObjectMapper objectMapper = new ObjectMapper();
     	for (Bucket bucket : terms.getBuckets()) {
     		// "_source" 데이터에 접근
-    		int count = 0;
     		ParsedTopHits topHits = bucket.getAggregations().get("sample_doc");
             for(org.elasticsearch.search.SearchHit searchHit : topHits.getHits()) {
             	Goods goods = objectMapper.convertValue(searchHit.getSourceAsMap(), Goods.class);
-            	logger.info(goods.toString() + " count : " + ++count);
         	    dataList.add(goods);
             }
     	}
-
-    	// 집계 결과 처리
-    	Aggregations aggregations = searchResponse.getAggregations();
-    	// 집계 결과에 접근하여 필요한 처리 수행
-
-    	// 사용이 끝난 경우 클라이언트를 닫아줍니다.
-    	client.close();
 
     	return dataList;
     }
