@@ -14,6 +14,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
@@ -82,7 +84,11 @@ public class ElasticsearchService {
     	}
 
     	sourceBuilder.aggregation(AggregationBuilders.terms("unique_docs")
-    	        .script(new Script("doc['price'].value + '|' + doc['sellid.keyword'].value + '|' + doc['name.keyword'].value")));
+    	        .script(new Script("doc['price'].value + '|' + doc['sellid.keyword'].value + '|' + doc['name.keyword'].value"))
+		    	.subAggregation(
+		                AggregationBuilders.topHits("sample_doc")
+		                        .size(1)
+		        ));
 
     	sourceBuilder.from((params.getPage() - 1) * params.getRecordSize());
     	sourceBuilder.size(params.getRecordSize());
@@ -92,13 +98,19 @@ public class ElasticsearchService {
     	searchRequest.scroll(TimeValue.timeValueMinutes(1));
 
     	SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-
+    	Terms terms = searchResponse.getAggregations().get("unique_docs");
     	// 검색 결과 처리
     	List<Goods> dataList = new ArrayList<>();
     	ObjectMapper objectMapper = new ObjectMapper();
-    	for (org.elasticsearch.search.SearchHit searchHit : searchResponse.getHits().getHits()) {
-    	    Goods goods = objectMapper.readValue(searchHit.getSourceAsString(), Goods.class);
-    	    dataList.add(goods);
+    	for (Bucket bucket : terms.getBuckets()) {
+    		// "_source" 데이터에 접근
+    		int count = 0;
+            SearchResponse sampleDocResponse = bucket.getAggregations().get("sample_doc");
+            for(org.elasticsearch.search.SearchHit searchHit : sampleDocResponse.getHits()) {
+            	Goods goods = objectMapper.convertValue(searchHit.getSourceAsMap(), Goods.class);
+            	logger.info(goods.toString() + " count : " + ++count);
+        	    dataList.add(goods);
+            }
     	}
 
     	// 집계 결과 처리
