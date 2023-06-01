@@ -97,7 +97,7 @@ public class ElasticsearchService {
 
     	SearchRequest searchRequest = new SearchRequest("goods");
     	searchRequest.source(sourceBuilder);
-    	searchRequest.scroll(TimeValue.timeValueMinutes(1));
+    	logger.info(searchRequest.toString());
 
     	SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
     	Terms terms = searchResponse.getAggregations().get("unique_docs");
