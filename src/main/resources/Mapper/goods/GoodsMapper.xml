@@ -67,6 +67,6 @@
     </select>
     
     <delete id="deleteGoodsList">
-		DELETE goods WHERE is_deleted = 1;
+		UPDATE goods SET is_deleted = 1;
 	</delete>
 </mapper>
