@@ -16,6 +16,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
+import org.elasticsearch.search.aggregations.metrics.ParsedTopHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
@@ -105,8 +106,8 @@ public class ElasticsearchService {
     	for (Bucket bucket : terms.getBuckets()) {
     		// "_source" 데이터에 접근
     		int count = 0;
-            SearchResponse sampleDocResponse = bucket.getAggregations().get("sample_doc");
-            for(org.elasticsearch.search.SearchHit searchHit : sampleDocResponse.getHits()) {
+    		ParsedTopHits topHits = bucket.getAggregations().get("sample_doc");
+            for(org.elasticsearch.search.SearchHit searchHit : topHits.getHits()) {
             	Goods goods = objectMapper.convertValue(searchHit.getSourceAsMap(), Goods.class);
             	logger.info(goods.toString() + " count : " + ++count);
         	    dataList.add(goods);
