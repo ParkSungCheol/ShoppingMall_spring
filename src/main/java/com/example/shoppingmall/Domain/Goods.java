@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Document(indexName = "goods")
@@ -15,7 +16,8 @@ public class Goods {
 
     @Field(type = FieldType.Date, name = "@timestamp")
     @JsonProperty("@timestamp")
-    private Date timestamp;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    private LocalDateTime timestamp;
 
     private String detail;
 
@@ -24,7 +26,7 @@ public class Goods {
     @Field(type = FieldType.Date, name = "insertion_time")
     @JsonProperty("insertion_time")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
-    private Date insertionTime;
+    private LocalDateTime insertionTime;
 
     @Field(name = "is_deleted")
     @JsonProperty("is_deleted")
@@ -32,7 +34,8 @@ public class Goods {
 
     @Field(type = FieldType.Date, name = "modification_time")
     @JsonProperty("modification_time")
-    private Date modificationTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    private LocalDateTime modificationTime;
 
     private Long price;
 
@@ -62,14 +65,6 @@ public class Goods {
 		this.name = name;
 	}
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-
 	public String getDetail() {
 		return detail;
 	}
@@ -86,28 +81,12 @@ public class Goods {
 		this.image = image;
 	}
 
-	public Date getInsertionTime() {
-		return insertionTime;
-	}
-
-	public void setInsertionTime(Date insertionTime) {
-		this.insertionTime = insertionTime;
-	}
-
 	public Long getIsDeleted() {
 		return isDeleted;
 	}
 
 	public void setIsDeleted(Long isDeleted) {
 		this.isDeleted = isDeleted;
-	}
-
-	public Date getModificationTime() {
-		return modificationTime;
-	}
-
-	public void setModificationTime(Date modificationTime) {
-		this.modificationTime = modificationTime;
 	}
 
 	public Long getPrice() {
@@ -156,6 +135,30 @@ public class Goods {
 
 	public void setDeliveryFee(Integer deliveryFee) {
 		this.deliveryFee = deliveryFee;
+	}
+	
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public LocalDateTime getInsertionTime() {
+		return insertionTime;
+	}
+
+	public void setInsertionTime(LocalDateTime insertionTime) {
+		this.insertionTime = insertionTime;
+	}
+
+	public LocalDateTime getModificationTime() {
+		return modificationTime;
+	}
+
+	public void setModificationTime(LocalDateTime modificationTime) {
+		this.modificationTime = modificationTime;
 	}
 
 	@Override
