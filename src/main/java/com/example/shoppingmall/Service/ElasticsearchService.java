@@ -1,6 +1,5 @@
 package com.example.shoppingmall.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -166,6 +165,9 @@ public class ElasticsearchService {
         }
         logger.info("[ getDate ] dataList.size : " + dataList.size());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if(dataList.size() < 1) {
+        	return null;
+        }
         String extractedDate = dataList.get(0).getInsertionTime().format(formatter);
         logger.info("[ getDate ] getInsertionTime : " + dataList.get(0).getInsertionTime());
         return extractedDate;

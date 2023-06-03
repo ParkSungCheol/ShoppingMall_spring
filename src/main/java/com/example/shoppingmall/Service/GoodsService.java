@@ -33,6 +33,9 @@ public class GoodsService {
 
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
     	String date = elasticsearchService.getDate(params);
+    	if(date == null || date.equals("")) {
+    		return new PagingResponse<>(Collections.emptyList(), null, null);
+    	}
         int count = elasticsearchService.count(params, date);
         if (count < 1) {
             return new PagingResponse<>(Collections.emptyList(), null, null);
