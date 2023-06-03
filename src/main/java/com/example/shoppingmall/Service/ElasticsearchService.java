@@ -166,6 +166,7 @@ public class ElasticsearchService {
         logger.info("[ getDate ] dataList.size : " + dataList.size());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
+        logger.info("[ getDate ] getInsertionTime : " + dataList.get(0).getInsertionTime());
         return extractedDate;
     }
 }
