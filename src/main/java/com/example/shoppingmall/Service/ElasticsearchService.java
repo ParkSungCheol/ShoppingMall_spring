@@ -1,6 +1,7 @@
 package com.example.shoppingmall.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -164,8 +165,8 @@ public class ElasticsearchService {
             dataList.add(searchHit.getContent());
         }
         logger.info("[ getDate ] dataList.size : " + dataList.size());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String extractedDate = dataList.get(0).getInsertionTime().format(formatter);
         logger.info("[ getDate ] getInsertionTime : " + dataList.get(0).getInsertionTime());
         return extractedDate;
     }
