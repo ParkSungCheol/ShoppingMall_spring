@@ -72,14 +72,14 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
     	
-    	logger.info("searchQuery.getQuery().toString() : " + searchQueryComplete.getQuery().toString());
+    	logger.info("[ getDataFromElasticsearch ] Query : " + searchQueryComplete.getQuery().toString());
     	
         SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQueryComplete, Goods.class);
         List<Goods> dataList = new ArrayList<>();
         for (SearchHit<Goods> searchHit : searchHits) {
             dataList.add(searchHit.getContent());
         }
-        logger.info("dataList.size() : " + dataList.size());
+        logger.info("[ getDataFromElasticsearch ] dataList.size() : " + dataList.size());
         return dataList;
     }
     
@@ -96,7 +96,7 @@ public class ElasticsearchService {
     		mustQuery.should(QueryBuilders.matchQuery("name.ngram", params.getSearchValue()));
     		boolQuery.must(mustQuery);
 	    	
-	    	logger.info("getSearchValue : " + params.getSearchValue());
+	    	logger.info("[ count ] getSearchValue : " + params.getSearchValue());
     	}
     	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
     	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
@@ -117,9 +117,12 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
     	
+    	logger.info("[ count ] date : " + date);
+    	logger.info("[ count ] Query : " + searchQueryComplete.getQuery().toString());
+    	
     	// 쿼리 실행
     	long countAggregation = elasticsearchOperations.count(searchQueryComplete, Goods.class);
-    	logger.info("countAggregation : " + countAggregation);
+    	logger.info("[ count ] countAggregation : " + countAggregation);
     	if(countAggregation > 800) { countAggregation = 800; }
     	return (int) countAggregation;
     }
@@ -153,14 +156,14 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
     	
-    	logger.info("searchQuery.getQuery().toString() : " + searchQueryComplete.getQuery().toString());
+    	logger.info("[ getDate ] Query : " + searchQueryComplete.getQuery().toString());
     	
         SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQueryComplete, Goods.class);
         List<Goods> dataList = new ArrayList<>();
         for (SearchHit<Goods> searchHit : searchHits) {
             dataList.add(searchHit.getContent());
         }
-        logger.info("dataList.size : " + dataList.size());
+        logger.info("[ getDate ] dataList.size : " + dataList.size());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String extractedDate = dateFormat.format(dataList.get(0).getInsertionTime());
         return extractedDate;
