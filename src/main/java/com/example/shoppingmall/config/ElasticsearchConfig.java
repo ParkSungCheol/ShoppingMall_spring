@@ -13,10 +13,17 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 @Configuration
 public class ElasticsearchConfig {
+	
+	@Value("${elasticsearch.url}")
+    private String url;
+	
+	@Value("${elasticsearch.port}")
+    private String port;
+	
     @Bean
     public ElasticsearchOperations elasticsearchOperations() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("ec2-54-180-119-204.ap-northeast-2.compute.amazonaws.com:3308")
+                .connectedTo(url + ":" + port)
                 .build();
 
         return new ElasticsearchRestTemplate(RestClients.create(clientConfiguration).rest());
@@ -27,7 +34,7 @@ public class ElasticsearchConfig {
     	return new RestHighLevelClient(
     		    RestClient.builder(
     		        // Elasticsearch 호스트 및 포트 설정
-    		        new HttpHost("ec2-54-180-119-204.ap-northeast-2.compute.amazonaws.com", 3308, "http")
+    		        new HttpHost(url, Integer.parseInt(port), "http")
     		        // 추가적인 Elasticsearch 호스트나 포트가 있다면 여기에 추가
     		    )
     		);
