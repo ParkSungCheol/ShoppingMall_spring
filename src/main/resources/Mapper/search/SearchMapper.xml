@@ -9,7 +9,7 @@
 		</if>
 	</delete>
 	
-	<select id="selectSearch">
+	<select id="selectSearch" resultType="com.example.shoppingmall.Domain.Search">
 		SELECT *
 		FROM search
 		WHERE 1=1
