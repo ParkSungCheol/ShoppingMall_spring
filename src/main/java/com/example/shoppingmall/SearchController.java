@@ -38,33 +38,29 @@ public class SearchController {
 	        				 @RequestParam("searchList") String searchListParam,
             				 HttpServletRequest request, 
             				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Search> convertedSearchList = new ArrayList<Search>();
-		// URL 디코딩된 JSON 문자열을 다시 객체로 변환
-//        List<Map<String, Object>> searchList = objectMapper.readValue(searchListParam, new TypeReference<List<Map<String, Object>>>() {});
-//		for (Map<String, Object> search : searchList) {
-//			Search convertedSearch = objectMapper.convertValue(search, Search.class);
-//			convertedSearchList.add(convertedSearch);
-//		}
 		logger.info(searchListParam);
-		List<Map<String, Object>> searchList = parseSearchList(searchListParam);
-		logger.info(searchList.get(0).get("searchValue").toString());
+		ObjectMapper objectMapper = new ObjectMapper();
+	    List<Map<String, Object>> searchList = objectMapper.readValue(searchListParam, new TypeReference<List<Map<String, Object>>>(){});
+	    
+	    // 디코딩된 JSON 배열 사용
+	    for (Map<String, Object> searchItem : searchList) {
+	        String searchValue = (String) searchItem.get("searchValue");
+	        Integer price = (Integer) searchItem.get("price");
+	        String term = (String) searchItem.get("term");
+	        Integer useYn = (Integer) searchItem.get("useYn");
+	        
+	        // 검색 항목 처리 로직 작성
+	        
+	        // 예시: 로그 출력
+	        logger.info("searchValue: " + searchValue);
+	        logger.info("price: " + price);
+	        logger.info("term: " + term);
+	        logger.info("useYn: " + useYn);
+	    }
 //		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
-	
-	private List<Map<String, Object>> parseSearchList(String searchListString) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            return objectMapper.readValue(searchListString, new TypeReference<List<Map<String, Object>>>() {});
-        } catch (JsonProcessingException e) {
-            // 파싱에 실패한 경우 예외 처리
-            e.printStackTrace();
-            return null;
-        }
-    }
 	
 	@GetMapping("/selectSearch")
 	@Transactional(value="txManager")
