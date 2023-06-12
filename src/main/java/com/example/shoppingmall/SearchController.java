@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppingmall.Domain.Search;
 import com.example.shoppingmall.Service.SearchService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -31,16 +34,20 @@ public class SearchController {
     
 	@GetMapping("/updateSearch")
     @Transactional(value="txManager")
-	public ResponseEntity<?> updateSearch(@RequestParam Map<String, String> param, 
+	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
+	        				 @RequestParam("searchList") String searchListParam,
             				 HttpServletRequest request, 
-            				 HttpServletResponse response) {
+            				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Search> convertedSearchList = new ArrayList<Search>();
-		logger.info("param : {}", param);
-//		for (Map<String, String> search : searchList) {
-//			Search convertedSearch = objectMapper.convertValue(search, Search.class);
-//			convertedSearchList.add(convertedSearch);
-//		}
+		// URL 디코딩된 JSON 문자열을 다시 객체로 변환
+        List<Map<String, Object>> searchList = objectMapper.readValue(searchListParam, new TypeReference<List<Map<String, Object>>>() {});
+		for (Map<String, Object> search : searchList) {
+			Search convertedSearch = objectMapper.convertValue(search, Search.class);
+			convertedSearchList.add(convertedSearch);
+		}
+		logger.info(convertedSearchList.get(0).getSearchValue());
+		logger.info(convertedSearchList.get(0).getTerm());
 //		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
