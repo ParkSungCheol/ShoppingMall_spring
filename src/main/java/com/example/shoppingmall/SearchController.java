@@ -46,11 +46,24 @@ public class SearchController {
 //			Search convertedSearch = objectMapper.convertValue(search, Search.class);
 //			convertedSearchList.add(convertedSearch);
 //		}
-		logger.info(searchListParam);
+		List<Map<String, Object>> searchList = parseSearchList(searchListParam);
+		logger.info(searchList.get(0).get("searchValue").toString());
 //		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
+	
+	private List<Map<String, Object>> parseSearchList(String searchListString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(searchListString, new TypeReference<List<Map<String, Object>>>() {});
+        } catch (JsonProcessingException e) {
+            // 파싱에 실패한 경우 예외 처리
+            e.printStackTrace();
+            return null;
+        }
+    }
 	
 	@GetMapping("/selectSearch")
 	@Transactional(value="txManager")
