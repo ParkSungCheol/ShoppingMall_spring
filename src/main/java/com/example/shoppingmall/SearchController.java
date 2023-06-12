@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +23,7 @@ public class SearchController {
     
 	@GetMapping("/updateSearch")
     @Transactional(value="txManager")
-	public void updateSearch(@RequestParam("userId") String userId,
+	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
             				 @RequestParam("searchList") List<Map<String, String>> searchList) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Search> convertedSearchList = new ArrayList<Search>();
@@ -30,6 +32,8 @@ public class SearchController {
 			convertedSearchList.add(convertedSearch);
 		}
 		searchService.updateSearch(userId, convertedSearchList);
+		
+		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 	
 	@GetMapping("/selectSearch")
