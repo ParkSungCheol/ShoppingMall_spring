@@ -35,7 +35,7 @@ public class SearchController {
 	@GetMapping("/updateSearch")
     @Transactional(value="txManager")
 	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
-							 @RequestBody String searchListParam,
+	        				 @RequestParam("searchList") String searchListParam,
             				 HttpServletRequest request, 
             				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -46,6 +46,7 @@ public class SearchController {
 //			Search convertedSearch = objectMapper.convertValue(search, Search.class);
 //			convertedSearchList.add(convertedSearch);
 //		}
+		logger.info(searchListParam);
 		List<Map<String, Object>> searchList = parseSearchList(searchListParam);
 		logger.info(searchList.get(0).get("searchValue").toString());
 //		searchService.updateSearch(userId, convertedSearchList);
