@@ -26,7 +26,7 @@ public class SearchController {
 	@Autowired
     private SearchService searchService;
     
-	@PostMapping("/updateSearch")
+	@GetMapping("/updateSearch")
     @Transactional(value="txManager")
 	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
 							 @RequestBody List<Map<String, String>> searchList, 
