@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,20 +27,21 @@ public class SearchController {
 
 	@Autowired
     private SearchService searchService;
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
     
 	@GetMapping("/updateSearch")
     @Transactional(value="txManager")
-	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
-							 @RequestBody List<Map<String, String>> searchList, 
+	public ResponseEntity<?> updateSearch(@RequestParam Map<String, String> param, 
             				 HttpServletRequest request, 
             				 HttpServletResponse response) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Search> convertedSearchList = new ArrayList<Search>();
-		for (Map<String, String> search : searchList) {
-			Search convertedSearch = objectMapper.convertValue(search, Search.class);
-			convertedSearchList.add(convertedSearch);
-		}
-		searchService.updateSearch(userId, convertedSearchList);
+		logger.info("param : {}", param);
+//		for (Map<String, String> search : searchList) {
+//			Search convertedSearch = objectMapper.convertValue(search, Search.class);
+//			convertedSearchList.add(convertedSearch);
+//		}
+//		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
