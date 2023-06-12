@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +27,9 @@ public class SearchController {
 	@GetMapping("/updateSearch")
     @Transactional(value="txManager")
 	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
-            				 @RequestParam("searchList") List<Map<String, String>> searchList) {
+            				 @RequestParam("searchList") List<Map<String, String>> searchList, 
+            				 HttpServletRequest request, 
+            				 HttpServletResponse response) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Search> convertedSearchList = new ArrayList<Search>();
 		for (Map<String, String> search : searchList) {
