@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.shoppingmall.Domain.Search;
@@ -24,10 +26,10 @@ public class SearchController {
 	@Autowired
     private SearchService searchService;
     
-	@GetMapping("/updateSearch")
+	@PostMapping("/updateSearch")
     @Transactional(value="txManager")
 	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
-            				 @RequestParam("searchList") List<Map<String, String>> searchList, 
+							 @RequestBody List<Map<String, String>> searchList, 
             				 HttpServletRequest request, 
             				 HttpServletResponse response) {
 		ObjectMapper objectMapper = new ObjectMapper();
