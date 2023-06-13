@@ -63,7 +63,7 @@ public class SearchController {
 	        
 	        convertedSearchList.add(search);
 	    }
-//		searchService.updateSearch(userId, convertedSearchList);
+		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
