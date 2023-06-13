@@ -34,7 +34,7 @@ public class SearchController {
     private SearchService searchService;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
     
-	@GetMapping("/updateSearch")
+	@PostMapping("/updateSearch")
     @Transactional(value="txManager")
 	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
 	        				 @RequestParam("searchList") String searchListParam,
