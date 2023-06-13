@@ -3,6 +3,7 @@ package com.example.shoppingmall;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,29 +41,33 @@ public class SearchController {
             				 HttpServletRequest request, 
             				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
 		logger.info(param);
-//		String decodedString = URLDecoder.decode(searchListParam, "UTF-8");
-//		ObjectMapper objectMapper = new ObjectMapper();
-//	    List<Map<String, Object>> searchList = objectMapper.readValue(decodedString, new TypeReference<List<Map<String, Object>>>(){});
-//	    List<Search> convertedSearchList = new ArrayList<Search>();
-//	    
-//	    // 디코딩된 JSON 배열 사용
-//	    for (Map<String, Object> searchItem : searchList) {
-//	        String searchValue = (String) searchItem.get("searchValue");
-//	        String price = (String) searchItem.get("price");
-//	        String term = (String) searchItem.get("term");
-//	        String useYn = (String) searchItem.get("useYn");
-//	        
-//	        // 검색 항목 처리 로직 작성
-//	        Search search = new Search();
-//	        search.setPrice(Integer.parseInt(price));
-//	        search.setSearchValue(searchValue);
-//	        search.setTerm(term);
-//	        search.setUserId(userId);
-//	        search.setUseYn(useYn);
-//	        
-//	        convertedSearchList.add(search);
-//	    }
-//		searchService.updateSearch(userId, convertedSearchList);
+		ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> data = objectMapper.readValue(param, HashMap.class);
+        
+        String userId = data.get("userId");
+        String searchListParam = data.get("searchList");
+		String decodedString = URLDecoder.decode(searchListParam, "UTF-8");
+	    List<Map<String, Object>> searchList = objectMapper.readValue(decodedString, new TypeReference<List<Map<String, Object>>>(){});
+	    List<Search> convertedSearchList = new ArrayList<Search>();
+	    
+	    // 디코딩된 JSON 배열 사용
+	    for (Map<String, Object> searchItem : searchList) {
+	        String searchValue = (String) searchItem.get("searchValue");
+	        String price = (String) searchItem.get("price");
+	        String term = (String) searchItem.get("term");
+	        String useYn = (String) searchItem.get("useYn");
+	        
+	        // 검색 항목 처리 로직 작성
+	        Search search = new Search();
+	        search.setPrice(Integer.parseInt(price));
+	        search.setSearchValue(searchValue);
+	        search.setTerm(term);
+	        search.setUserId(userId);
+	        search.setUseYn(useYn);
+	        
+	        convertedSearchList.add(search);
+	    }
+		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
