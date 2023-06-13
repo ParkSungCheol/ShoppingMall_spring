@@ -40,9 +40,8 @@ public class SearchController {
 	        				 @RequestParam("searchList") String searchListParam,
             				 HttpServletRequest request, 
             				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
-		logger.info(searchListParam);
+		logger.info(userId);
 		String decodedString = URLDecoder.decode(searchListParam, "UTF-8");
-		logger.info(decodedString);
 		ObjectMapper objectMapper = new ObjectMapper();
 	    List<Map<String, Object>> searchList = objectMapper.readValue(decodedString, new TypeReference<List<Map<String, Object>>>(){});
 	    List<Search> convertedSearchList = new ArrayList<Search>();
@@ -64,7 +63,7 @@ public class SearchController {
 	        
 	        convertedSearchList.add(search);
 	    }
-		searchService.updateSearch(userId, convertedSearchList);
+//		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
