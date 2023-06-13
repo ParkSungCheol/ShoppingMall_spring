@@ -49,9 +49,9 @@ public class SearchController {
 	    // 디코딩된 JSON 배열 사용
 	    for (Map<String, Object> searchItem : searchList) {
 	        String searchValue = (String) searchItem.get("searchValue");
-	        Integer price = (Integer) searchItem.get("price");
+	        String price = (String) searchItem.get("price");
 	        String term = (String) searchItem.get("term");
-	        Integer useYn = (Integer) searchItem.get("useYn");
+	        String useYn = (String) searchItem.get("useYn");
 	        
 	        // 검색 항목 처리 로직 작성
 	        
