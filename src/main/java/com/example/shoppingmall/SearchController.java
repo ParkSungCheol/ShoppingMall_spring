@@ -44,7 +44,7 @@ public class SearchController {
 		String decodedString = URLDecoder.decode(searchListParam, "UTF-8");
 		logger.info(decodedString);
 		ObjectMapper objectMapper = new ObjectMapper();
-	    List<Map<String, Object>> searchList = objectMapper.readValue(searchListParam, new TypeReference<List<Map<String, Object>>>(){});
+	    List<Map<String, Object>> searchList = objectMapper.readValue(decodedString, new TypeReference<List<Map<String, Object>>>(){});
 	    
 	    // 디코딩된 JSON 배열 사용
 	    for (Map<String, Object> searchItem : searchList) {
