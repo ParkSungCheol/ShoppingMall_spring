@@ -1,5 +1,7 @@
 package com.example.shoppingmall;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +39,10 @@ public class SearchController {
 	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
 	        				 @RequestParam("searchList") String searchListParam,
             				 HttpServletRequest request, 
-            				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException {
+            				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
 		logger.info(searchListParam);
+		String decodedString = URLDecoder.decode(searchListParam, "UTF-8");
+		logger.info(decodedString);
 		ObjectMapper objectMapper = new ObjectMapper();
 	    List<Map<String, Object>> searchList = objectMapper.readValue(searchListParam, new TypeReference<List<Map<String, Object>>>(){});
 	    
