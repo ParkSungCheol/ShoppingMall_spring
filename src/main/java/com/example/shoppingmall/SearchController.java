@@ -52,10 +52,10 @@ public class SearchController {
 	    
 	    // 디코딩된 JSON 배열 사용
 	    for (Map<String, Object> searchItem : searchList) {
-	        String searchValue = (String) searchItem.get("searchValue");
-	        String price = (String) searchItem.get("price");
-	        String term = (String) searchItem.get("term");
-	        String useYn = (String) searchItem.get("useYn");
+	        String searchValue = searchItem.get("searchValue") instanceof Integer? ((Integer) searchItem.get("searchValue")).toString() : (String) searchItem.get("searchValue");
+	        String price = searchItem.get("price") instanceof Integer? ((Integer) searchItem.get("price")).toString() : (String) searchItem.get("price");
+	        String term = searchItem.get("term") instanceof Integer? ((Integer) searchItem.get("term")).toString() : (String) searchItem.get("term");
+	        String useYn = searchItem.get("useYn") instanceof Integer? ((Integer) searchItem.get("useYn")).toString() : (String) searchItem.get("useYn");
 	        
 	        // 검색 항목 처리 로직 작성
 	        Search search = new Search();
