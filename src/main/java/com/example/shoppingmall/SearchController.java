@@ -36,34 +36,33 @@ public class SearchController {
     
 	@PostMapping("/updateSearch")
     @Transactional(value="txManager")
-	public ResponseEntity<?> updateSearch(@RequestParam("userId") String userId,
-	        				 @RequestParam("searchList") String searchListParam,
+	public ResponseEntity<?> updateSearch(@RequestBody String param,
             				 HttpServletRequest request, 
             				 HttpServletResponse response) throws JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
-		logger.info(userId);
-		String decodedString = URLDecoder.decode(searchListParam, "UTF-8");
-		ObjectMapper objectMapper = new ObjectMapper();
-	    List<Map<String, Object>> searchList = objectMapper.readValue(decodedString, new TypeReference<List<Map<String, Object>>>(){});
-	    List<Search> convertedSearchList = new ArrayList<Search>();
-	    
-	    // 디코딩된 JSON 배열 사용
-	    for (Map<String, Object> searchItem : searchList) {
-	        String searchValue = (String) searchItem.get("searchValue");
-	        String price = (String) searchItem.get("price");
-	        String term = (String) searchItem.get("term");
-	        String useYn = (String) searchItem.get("useYn");
-	        
-	        // 검색 항목 처리 로직 작성
-	        Search search = new Search();
-	        search.setPrice(Integer.parseInt(price));
-	        search.setSearchValue(searchValue);
-	        search.setTerm(term);
-	        search.setUserId(userId);
-	        search.setUseYn(useYn);
-	        
-	        convertedSearchList.add(search);
-	    }
-		searchService.updateSearch(userId, convertedSearchList);
+		logger.info(param);
+//		String decodedString = URLDecoder.decode(searchListParam, "UTF-8");
+//		ObjectMapper objectMapper = new ObjectMapper();
+//	    List<Map<String, Object>> searchList = objectMapper.readValue(decodedString, new TypeReference<List<Map<String, Object>>>(){});
+//	    List<Search> convertedSearchList = new ArrayList<Search>();
+//	    
+//	    // 디코딩된 JSON 배열 사용
+//	    for (Map<String, Object> searchItem : searchList) {
+//	        String searchValue = (String) searchItem.get("searchValue");
+//	        String price = (String) searchItem.get("price");
+//	        String term = (String) searchItem.get("term");
+//	        String useYn = (String) searchItem.get("useYn");
+//	        
+//	        // 검색 항목 처리 로직 작성
+//	        Search search = new Search();
+//	        search.setPrice(Integer.parseInt(price));
+//	        search.setSearchValue(searchValue);
+//	        search.setTerm(term);
+//	        search.setUserId(userId);
+//	        search.setUseYn(useYn);
+//	        
+//	        convertedSearchList.add(search);
+//	    }
+//		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
