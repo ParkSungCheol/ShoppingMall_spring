@@ -45,6 +45,7 @@ public class SearchController {
 		logger.info(decodedString);
 		ObjectMapper objectMapper = new ObjectMapper();
 	    List<Map<String, Object>> searchList = objectMapper.readValue(decodedString, new TypeReference<List<Map<String, Object>>>(){});
+	    List<Search> convertedSearchList = new ArrayList<Search>();
 	    
 	    // 디코딩된 JSON 배열 사용
 	    for (Map<String, Object> searchItem : searchList) {
@@ -54,14 +55,16 @@ public class SearchController {
 	        String useYn = (String) searchItem.get("useYn");
 	        
 	        // 검색 항목 처리 로직 작성
+	        Search search = new Search();
+	        search.setPrice(Integer.parseInt(price));
+	        search.setSearchValue(searchValue);
+	        search.setTerm(term);
+	        search.setUserId(userId);
+	        search.setUseYn(useYn);
 	        
-	        // 예시: 로그 출력
-	        logger.info("searchValue: " + searchValue);
-	        logger.info("price: " + price);
-	        logger.info("term: " + term);
-	        logger.info("useYn: " + useYn);
+	        convertedSearchList.add(search);
 	    }
-//		searchService.updateSearch(userId, convertedSearchList);
+		searchService.updateSearch(userId, convertedSearchList);
 		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
