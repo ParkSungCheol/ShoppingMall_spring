@@ -42,10 +42,10 @@ public class ElasticsearchService {
     	}
     	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
     	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
-    		boolQuery.filter(QueryBuilders.rangeQuery("price").gt(params.getSearchMinPrice()));
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").gte(params.getSearchMinPrice()));
     	}
     	if(params.getSearchMaxPrice() != null && params.getSearchMaxPrice() > 0) {
-    		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").lte(params.getSearchMaxPrice()));
     	}
 
     	// insertion_time 조건 추가
@@ -100,10 +100,10 @@ public class ElasticsearchService {
     	}
     	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
     	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
-    		boolQuery.filter(QueryBuilders.rangeQuery("price").gt(params.getSearchMinPrice()));
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").gte(params.getSearchMinPrice()));
     	}
     	if(params.getSearchMaxPrice() != null && params.getSearchMaxPrice() > 0) {
-    		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").lte(params.getSearchMaxPrice()));
     	}
     	
     	// insertion_time 조건 추가
@@ -140,10 +140,10 @@ public class ElasticsearchService {
     	}
     	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
     	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
-    		boolQuery.filter(QueryBuilders.rangeQuery("price").gt(params.getSearchMinPrice()));
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").gte(params.getSearchMinPrice()));
     	}
     	if(params.getSearchMaxPrice() != null && params.getSearchMaxPrice() > 0) {
-    		boolQuery.filter(QueryBuilders.rangeQuery("price").lt(params.getSearchMaxPrice()));
+    		boolQuery.filter(QueryBuilders.rangeQuery("price").lte(params.getSearchMaxPrice()));
     	}
 
     	// NativeSearchQuery를 사용하여 쿼리 실행
