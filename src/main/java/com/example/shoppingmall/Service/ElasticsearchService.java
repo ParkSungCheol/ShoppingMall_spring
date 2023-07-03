@@ -101,12 +101,10 @@ public class ElasticsearchService {
 
     	        for (Bucket bucket : buckets) {
     	            String keyAsString = bucket.getKeyAsString();
-    	            long key = ((Number) bucket.getKey()).longValue();
     	            long docCount = bucket.getDocCount();
     	            double averagePrice = Double.parseDouble(bucket.getAggregations().get("average_price"));
 
     	            logger.info("keyAsString : {}", keyAsString);
-    	            logger.info("key : {}", key);
     	            logger.info("docCount : {}", docCount);
     	            logger.info("averagePrice : {}", averagePrice);
     	        }
