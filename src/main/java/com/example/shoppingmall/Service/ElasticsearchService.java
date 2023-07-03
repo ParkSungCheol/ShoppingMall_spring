@@ -66,7 +66,7 @@ public class ElasticsearchService {
     	                .must(mustQueryBuilder)
     	                .filter(filterQueryBuilder))
     	        .addAggregation(dateHistogramAggregation) // AggregationBuilder 추가
-    	        .withPageable(PageRequest.of(0, 0));
+    	        .withPageable(PageRequest.of(0, 1));
 
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
 
