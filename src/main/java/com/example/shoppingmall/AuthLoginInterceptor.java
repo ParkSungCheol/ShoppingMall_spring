@@ -3,6 +3,7 @@ package com.example.shoppingmall;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,7 +25,9 @@ public class AuthLoginInterceptor implements HandlerInterceptor{
 			if(user != null) {
 				return true;
 			}
-			throw new Exception("user is null");
+			// 세션 유효하지 않은 경우 300번대 응답 전달
+            response.setStatus(HttpStatus.SC_SEE_OTHER);
+            return false; // 컨트롤러 실행을 중지하고 요청을 중단
 		}
 		return true;
 	}
