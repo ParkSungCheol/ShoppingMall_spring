@@ -89,7 +89,10 @@ public class ElasticsearchService {
     	request.indices("goods").source(query);
     	SearchResponse response = client.search(request, RequestOptions.DEFAULT);
     	
+    	logger.info("####### response : {}", response.toString());
     	Aggregations aggregation = response.getAggregations();
+    	
+    	logger.info("####### Aggregations : {}", aggregation.toString());
     	if (aggregation != null) {
     	    ParsedDateHistogram dateHistogram = aggregation.get("dates");
 
