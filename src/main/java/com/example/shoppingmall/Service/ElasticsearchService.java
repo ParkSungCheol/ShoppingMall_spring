@@ -1,9 +1,16 @@
 package com.example.shoppingmall.Service;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -11,9 +18,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram.Bucket;
+import org.elasticsearch.search.aggregations.bucket.histogram.ParsedDateHistogram;
 import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -32,16 +42,19 @@ import org.springframework.stereotype.Service;
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.SearchDto;
 
+
 @Service
 public class ElasticsearchService {
     private final ElasticsearchOperations elasticsearchOperations;
+    private final RestHighLevelClient client;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    public ElasticsearchService(ElasticsearchOperations elasticsearchOperations) {
+    public ElasticsearchService(ElasticsearchOperations elasticsearchOperations, RestHighLevelClient client) {
         this.elasticsearchOperations = elasticsearchOperations;
+        this.client = client;
     }
     
-    public String getStatisticData(String search) {
+    public String getStatisticData(String search) throws IOException {
     	QueryBuilder nameMatchQueryBuilder = QueryBuilders.matchQuery("name", search)
     	        .operator(Operator.OR);
 
@@ -71,6 +84,31 @@ public class ElasticsearchService {
 
     	String jsonQuery = query.toString();
     	logger.info("####### jsonQuery : {}", jsonQuery);
+    	
+    	SearchRequest request = new SearchRequest();
+    	request.indices("goods").source(query);
+    	SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+    	
+    	Aggregations aggregation = response.getAggregations();
+    	if (aggregation != null) {
+    	    ParsedDateHistogram dateHistogram = aggregation.get("dates");
+
+    	    if (dateHistogram != null) {
+    	        List<? extends Bucket> buckets = dateHistogram.getBuckets();
+
+    	        for (Bucket bucket : buckets) {
+    	            String keyAsString = bucket.getKeyAsString();
+    	            long key = ((Number) bucket.getKey()).longValue();
+    	            long docCount = bucket.getDocCount();
+    	            double averagePrice = Double.parseDouble(bucket.getAggregations().get("average_price"));
+
+    	            logger.info("keyAsString : {}", keyAsString);
+    	            logger.info("key : {}", key);
+    	            logger.info("docCount : {}", docCount);
+    	            logger.info("averagePrice : {}", averagePrice);
+    	        }
+    	    }
+    	}
     	return jsonQuery;
     }
 

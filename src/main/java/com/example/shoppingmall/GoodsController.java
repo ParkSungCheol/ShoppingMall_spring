@@ -36,7 +36,7 @@ public class GoodsController {
 	
 	@GetMapping("/statistic")
     @Transactional(value="txManager")
-    public ResponseEntity<?> getStatisticData (@RequestParam Map<String, String> param) {
+    public ResponseEntity<?> getStatisticData (@RequestParam Map<String, String> param) throws IOException {
 		elasticsearchService.getStatisticData(param.get("searchValue"));
 		return new ResponseEntity<>("ok", HttpStatus.OK);
     }
