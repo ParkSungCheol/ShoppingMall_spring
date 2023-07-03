@@ -12,6 +12,7 @@ import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -55,17 +56,18 @@ public class ElasticsearchService {
 
     	QueryBuilder filterQueryBuilder = QueryBuilders.termQuery("is_deleted", 0);
 
+    	AvgAggregationBuilder avgAggregation = AggregationBuilders.avg("average_price").field("price");
+    	DateHistogramInterval interval = DateHistogramInterval.DAY;
     	AbstractAggregationBuilder<?> dateHistogramAggregation = AggregationBuilders.dateHistogram("dates")
     	        .field("insertion_time")
-    	        .calendarInterval(DateHistogramInterval.DAY)
-    	        .subAggregation(AggregationBuilders.avg("average_price")
-    	                .field("price"));
+    	        .calendarInterval(interval)
+    	        .subAggregation(avgAggregation);
 
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(QueryBuilders.boolQuery()
     	                .must(mustQueryBuilder)
     	                .filter(filterQueryBuilder))
-    	        .addAggregation(dateHistogramAggregation) // AggregationBuilder 추가
+    	        .withAggregations(dateHistogramAggregation) // AggregationBuilder 추가
     	        .withPageable(PageRequest.of(0, 1));
 
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
