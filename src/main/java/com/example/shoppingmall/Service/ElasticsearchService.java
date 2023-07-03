@@ -2,11 +2,13 @@ package com.example.shoppingmall.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
@@ -37,55 +39,38 @@ public class ElasticsearchService {
     }
     
     public String getStatisticData(String search) {
-    	QueryBuilder nameMatchQueryBuilder = QueryBuilders.matchQuery("name", "케이크")
-    	        .operator(Operator.OR)
-    	        .prefixLength(0)
-    	        .maxExpansions(50)
-    	        .fuzzyTranspositions(true)
-    	        .lenient(false)
-    	        .autoGenerateSynonymsPhraseQuery(true)
-    	        .boost(1.0f);
+    	QueryBuilder nameMatchQueryBuilder = QueryBuilders.matchQuery("name", search)
+    	        .operator(Operator.OR);
 
-    	QueryBuilder nameNoriMatchQueryBuilder = QueryBuilders.matchQuery("name.nori", "케이크")
-    	        .operator(Operator.OR)
-    	        .prefixLength(0)
-    	        .maxExpansions(50)
-    	        .fuzzyTranspositions(true)
-    	        .lenient(false)
-    	        .autoGenerateSynonymsPhraseQuery(true)
-    	        .boost(1.0f);
+    	QueryBuilder nameNoriMatchQueryBuilder = QueryBuilders.matchQuery("name.nori", search)
+    	        .operator(Operator.OR);
 
-    	QueryBuilder nameNgramMatchQueryBuilder = QueryBuilders.matchQuery("name.ngram", "케이크")
-    	        .operator(Operator.OR)
-    	        .prefixLength(0)
-    	        .maxExpansions(50)
-    	        .fuzzyTranspositions(true)
-    	        .lenient(false)
-    	        .autoGenerateSynonymsPhraseQuery(true)
-    	        .boost(1.0f);
+    	QueryBuilder nameNgramMatchQueryBuilder = QueryBuilders.matchQuery("name.ngram", search)
+    	        .operator(Operator.OR);
 
-    	QueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-    	        .must(QueryBuilders.boolQuery()
-    	                .should(nameMatchQueryBuilder)
-    	                .should(nameNoriMatchQueryBuilder)
-    	                .should(nameNgramMatchQueryBuilder)
-    	                .adjustPureNegative(true)
-    	                .boost(1.0f))
-    	        .filter(QueryBuilders.termQuery("is_deleted", 0));
+    	QueryBuilder mustQueryBuilder = QueryBuilders.boolQuery()
+    	        .should(nameMatchQueryBuilder)
+    	        .should(nameNoriMatchQueryBuilder)
+    	        .should(nameNgramMatchQueryBuilder);
 
-    	AggregationBuilder dateHistogramAggregation = AggregationBuilders.dateHistogram("dates")
+    	QueryBuilder filterQueryBuilder = QueryBuilders.termQuery("is_deleted", 0);
+
+    	AbstractAggregationBuilder<?> dateHistogramAggregation = AggregationBuilders.dateHistogram("dates")
     	        .field("insertion_time")
     	        .calendarInterval(DateHistogramInterval.DAY)
     	        .subAggregation(AggregationBuilders.avg("average_price")
     	                .field("price"));
 
-    	SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
-    	        .size(0)
-    	        .query(boolQueryBuilder)
-    	        .aggregation(dateHistogramAggregation)
-    	        .sort(SortBuilders.fieldSort("insertion_time").order(SortOrder.DESC));
+    	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
+    	        .withQuery(QueryBuilders.boolQuery()
+    	                .must(mustQueryBuilder)
+    	                .filter(filterQueryBuilder))
+    	        .addAggregation(dateHistogramAggregation) // AggregationBuilder 추가
+    	        .withPageable(PageRequest.of(0, 0));
 
-    	String jsonQuery = searchSourceBuilder.toString();
+    	NativeSearchQuery searchQueryComplete = searchQuery.build();
+
+    	String jsonQuery = searchQueryComplete.getQuery().toString();
     	logger.info("####### jsonQuery : {}", jsonQuery);
     	return jsonQuery;
     }
