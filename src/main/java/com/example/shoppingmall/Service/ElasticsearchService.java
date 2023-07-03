@@ -64,13 +64,10 @@ public class ElasticsearchService {
     													.fixedInterval(interval)
     													.subAggregation(AggregationBuilders.avg("average_price").field("price"))
     													.order(BucketOrder.key(false));
-    			
-    	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
-    	        .withQuery(QueryBuilders.boolQuery()
-    	                .must(mustQueryBuilder)
-    	                .filter(filterQueryBuilder));
 
-    	SearchSourceBuilder query = SearchSourceBuilder.searchSource().query((QueryBuilder)searchQuery).aggregation(aggregations).size(0);
+    	SearchSourceBuilder query = SearchSourceBuilder.searchSource().query(QueryBuilders.boolQuery()
+															                .must(mustQueryBuilder)
+															                .filter(filterQueryBuilder)).aggregation(aggregations).size(0);
 
     	String jsonQuery = query.toString();
     	logger.info("####### jsonQuery : {}", jsonQuery);
