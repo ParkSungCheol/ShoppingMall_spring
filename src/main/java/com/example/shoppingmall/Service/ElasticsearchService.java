@@ -11,6 +11,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -56,23 +58,21 @@ public class ElasticsearchService {
 
     	QueryBuilder filterQueryBuilder = QueryBuilders.termQuery("is_deleted", 0);
 
-    	AvgAggregationBuilder avgAggregation = AggregationBuilders.avg("average_price").field("price");
     	DateHistogramInterval interval = DateHistogramInterval.DAY;
-    	AbstractAggregationBuilder<?> dateHistogramAggregation = AggregationBuilders.dateHistogram("dates")
-    	        .field("insertion_time")
-    	        .calendarInterval(interval)
-    	        .subAggregation(avgAggregation);
-
+    	DateHistogramAggregationBuilder aggregations = AggregationBuilders.dateHistogram("dates")
+    													.field("insertion_time")
+    													.fixedInterval(interval)
+    													.subAggregation(AggregationBuilders.avg("average_price").field("price"))
+    													.order(BucketOrder.key(false));
+    			
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(QueryBuilders.boolQuery()
     	                .must(mustQueryBuilder)
-    	                .filter(filterQueryBuilder))
-    	        .withAggregations(dateHistogramAggregation) // AggregationBuilder 추가
-    	        .withPageable(PageRequest.of(0, 1));
+    	                .filter(filterQueryBuilder));
 
-    	NativeSearchQuery searchQueryComplete = searchQuery.build();
+    	SearchSourceBuilder query = SearchSourceBuilder.searchSource().query((QueryBuilder)searchQuery).aggregation(aggregations).size(0);
 
-    	String jsonQuery = searchQueryComplete.getQuery().toString();
+    	String jsonQuery = query.toString();
     	logger.info("####### jsonQuery : {}", jsonQuery);
     	return jsonQuery;
     }
