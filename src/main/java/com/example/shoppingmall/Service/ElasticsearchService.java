@@ -24,6 +24,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggre
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram.Bucket;
 import org.elasticsearch.search.aggregations.bucket.histogram.ParsedDateHistogram;
+import org.elasticsearch.search.aggregations.metrics.Avg;
 import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -102,7 +103,8 @@ public class ElasticsearchService {
     	        for (Bucket bucket : buckets) {
     	            String keyAsString = bucket.getKeyAsString();
     	            long docCount = bucket.getDocCount();
-    	            double averagePrice = Double.parseDouble(bucket.getAggregations().get("average_price"));
+    	            Avg averagePriceAggregation = bucket.getAggregations().get("avg#average_price");
+    	            Double averagePrice = averagePriceAggregation.getValue();
 
     	            logger.info("keyAsString : {}", keyAsString);
     	            logger.info("docCount : {}", docCount);
