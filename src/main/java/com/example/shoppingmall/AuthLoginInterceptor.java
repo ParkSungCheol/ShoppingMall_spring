@@ -21,9 +21,11 @@ public class AuthLoginInterceptor implements HandlerInterceptor{
 		// TODO Auto-generated method stub
 		logger.info("preHandle");
 		if (request.getMethod().equals("POST") || request.getMethod().equals("GET")) {
-			User user = (User) request.getSession(false).getAttribute("loginUserId");
-			if(user != null) {
-				return true;
+			if(request.getSession(false) != null) {
+				User user = (User) request.getSession(false).getAttribute("loginUserId");
+				if(user != null) {
+					return true;
+				}
 			}
 			// 세션 유효하지 않은 경우 300번대 응답 전달
             response.setStatus(HttpStatus.SC_SEE_OTHER);
