@@ -4,7 +4,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +34,60 @@ public class ElasticsearchService {
     @Autowired
     public ElasticsearchService(ElasticsearchOperations elasticsearchOperations) {
         this.elasticsearchOperations = elasticsearchOperations;
+    }
+    
+    public String getStatisticData(String search) {
+    	QueryBuilder nameMatchQueryBuilder = QueryBuilders.matchQuery("name", "케이크")
+    	        .operator(Operator.OR)
+    	        .prefixLength(0)
+    	        .maxExpansions(50)
+    	        .fuzzyTranspositions(true)
+    	        .lenient(false)
+    	        .autoGenerateSynonymsPhraseQuery(true)
+    	        .boost(1.0f);
+
+    	QueryBuilder nameNoriMatchQueryBuilder = QueryBuilders.matchQuery("name.nori", "케이크")
+    	        .operator(Operator.OR)
+    	        .prefixLength(0)
+    	        .maxExpansions(50)
+    	        .fuzzyTranspositions(true)
+    	        .lenient(false)
+    	        .autoGenerateSynonymsPhraseQuery(true)
+    	        .boost(1.0f);
+
+    	QueryBuilder nameNgramMatchQueryBuilder = QueryBuilders.matchQuery("name.ngram", "케이크")
+    	        .operator(Operator.OR)
+    	        .prefixLength(0)
+    	        .maxExpansions(50)
+    	        .fuzzyTranspositions(true)
+    	        .lenient(false)
+    	        .autoGenerateSynonymsPhraseQuery(true)
+    	        .boost(1.0f);
+
+    	QueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+    	        .must(QueryBuilders.boolQuery()
+    	                .should(nameMatchQueryBuilder)
+    	                .should(nameNoriMatchQueryBuilder)
+    	                .should(nameNgramMatchQueryBuilder)
+    	                .adjustPureNegative(true)
+    	                .boost(1.0f))
+    	        .filter(QueryBuilders.termQuery("is_deleted", 0));
+
+    	AggregationBuilder dateHistogramAggregation = AggregationBuilders.dateHistogram("dates")
+    	        .field("insertion_time")
+    	        .calendarInterval(DateHistogramInterval.DAY)
+    	        .subAggregation(AggregationBuilders.avg("average_price")
+    	                .field("price"));
+
+    	SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
+    	        .size(0)
+    	        .query(boolQueryBuilder)
+    	        .aggregation(dateHistogramAggregation)
+    	        .sort(SortBuilders.fieldSort("insertion_time").order(SortOrder.DESC));
+
+    	String jsonQuery = searchSourceBuilder.toString();
+    	logger.info("####### jsonQuery : {}", jsonQuery);
+    	return jsonQuery;
     }
 
     public List<Goods> getDataFromElasticsearch(SearchDto params, String date) {

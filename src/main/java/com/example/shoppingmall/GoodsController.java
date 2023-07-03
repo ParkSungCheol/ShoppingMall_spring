@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,8 @@ public class GoodsController {
 
 	@Autowired
 	private GoodsService goodsService;
+	@Autowired
+	private ElasticsearchService elasticsearchService;
 
 	@GetMapping("/goods")
     @Transactional(value="txManager")
@@ -28,5 +32,12 @@ public class GoodsController {
 		ObjectMapper objectMapper = new ObjectMapper();
     	SearchDto searchDto = objectMapper.convertValue(param, SearchDto.class);
         return goodsService.getGoodsList(searchDto);
+    }
+	
+	@GetMapping("/statistic")
+    @Transactional(value="txManager")
+    public ResponseEntity<?> getStatisticData (@RequestParam Map<String, String> param) {
+		elasticsearchService.getStatisticData(param.get("searchValue"));
+		return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 }
