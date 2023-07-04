@@ -42,6 +42,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.SearchDto;
+import com.example.shoppingmall.Domain.Statistic;
 
 
 @Service
@@ -55,7 +56,7 @@ public class ElasticsearchService {
         this.client = client;
     }
     
-    public String getStatisticData(String search) throws IOException {
+    public List<Statistic> getStatisticData(String search) throws IOException {
     	QueryBuilder nameMatchQueryBuilder = QueryBuilders.matchQuery("name", search)
     	        .operator(Operator.OR);
 
@@ -94,25 +95,30 @@ public class ElasticsearchService {
     	Aggregations aggregation = response.getAggregations();
     	
     	logger.info("####### Aggregations : {}", aggregation.toString());
+    	List<Statistic> statistics = new ArrayList<Statistic>();
+    	
     	if (aggregation != null) {
     	    ParsedDateHistogram dateHistogram = aggregation.get("dates");
 
     	    if (dateHistogram != null) {
     	        List<? extends Bucket> buckets = dateHistogram.getBuckets();
-
+    	        int count = 0;
     	        for (Bucket bucket : buckets) {
-    	            String keyAsString = bucket.getKeyAsString();
+    	        	count++;
+    	        	if(count > 10) break;
+    	        	Statistic statistic = new Statistic();
+    	            String keyAsString = bucket.getKeyAsString().substring(0, 10);
     	            long docCount = bucket.getDocCount();
     	            Avg averagePriceAggregation = bucket.getAggregations().get("average_price");
     	            Double averagePrice = averagePriceAggregation.getValue();
 
-    	            logger.info("keyAsString : {}", keyAsString);
-    	            logger.info("docCount : {}", docCount);
-    	            logger.info("averagePrice : {}", averagePrice);
+    	            statistic.setKeyAsString(keyAsString);
+    	            statistic.setDocCount(docCount);
+    	            statistic.setAveragePrice(averagePrice);
     	        }
     	    }
     	}
-    	return jsonQuery;
+    	return statistics;
     }
 
     public List<Goods> getDataFromElasticsearch(SearchDto params, String date) {
