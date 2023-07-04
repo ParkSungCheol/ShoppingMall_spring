@@ -3,9 +3,7 @@ package com.example.shoppingmall.Service;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -15,8 +13,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -25,10 +21,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram.Bucket;
 import org.elasticsearch.search.aggregations.bucket.histogram.ParsedDateHistogram;
 import org.elasticsearch.search.aggregations.metrics.Avg;
-import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +33,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
+
 import com.example.shoppingmall.Domain.Goods;
 import com.example.shoppingmall.Domain.SearchDto;
 import com.example.shoppingmall.Domain.Statistic;
@@ -84,6 +78,8 @@ public class ElasticsearchService {
 															                .must(mustQueryBuilder)
 															                .filter(filterQueryBuilder)).aggregation(aggregations).size(0);
 
+    	query.minScore(50.0f);
+    	
     	String jsonQuery = query.toString();
     	logger.info("####### jsonQuery : {}", jsonQuery);
     	
@@ -146,6 +142,10 @@ public class ElasticsearchService {
     	// insertion_time 조건 추가
     	boolQuery.filter(QueryBuilders.matchQuery("insertion_time", date));
     	
+    	// "min_score" 조건 추가
+    	boolQuery.minimumShouldMatch(1);
+    	boolQuery.boost(50);
+    	
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
@@ -204,6 +204,10 @@ public class ElasticsearchService {
     	// insertion_time 조건 추가
     	boolQuery.filter(QueryBuilders.matchQuery("insertion_time", date));
     	
+    	// "min_score" 조건 추가
+    	boolQuery.minimumShouldMatch(1);
+    	boolQuery.boost(50);
+    	
     	// NativeSearchQueryBuilder를 사용하여 쿼리 생성
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
@@ -234,6 +238,10 @@ public class ElasticsearchService {
     		boolQuery.must(mustQuery);
     	}
     	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
+    	// "min_score" 조건 추가
+    	boolQuery.minimumShouldMatch(1);
+    	boolQuery.boost(50);
+    	
     	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
     		boolQuery.filter(QueryBuilders.rangeQuery("price").gte(params.getSearchMinPrice()));
     	}
