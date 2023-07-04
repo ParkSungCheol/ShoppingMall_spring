@@ -142,13 +142,10 @@ public class ElasticsearchService {
     	// insertion_time 조건 추가
     	boolQuery.filter(QueryBuilders.matchQuery("insertion_time", date));
     	
-    	// "min_score" 조건 추가
-    	boolQuery.minimumShouldMatch(1);
-    	boolQuery.boost(50);
-    	
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
+    	        .withMinScore(50)
     	        .withPageable(PageRequest.of(params.getPage() - 1, params.getRecordSize()));
     	
     	// ORDER BY 절 추가
@@ -204,13 +201,10 @@ public class ElasticsearchService {
     	// insertion_time 조건 추가
     	boolQuery.filter(QueryBuilders.matchQuery("insertion_time", date));
     	
-    	// "min_score" 조건 추가
-    	boolQuery.minimumShouldMatch(1);
-    	boolQuery.boost(50);
-    	
     	// NativeSearchQueryBuilder를 사용하여 쿼리 생성
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
+    	        .withMinScore(50)
     	        .withMinScore(0.0f); // adjust_pure_negative를 false로 설정
 
     	// NativeSearchQuery를 사용하여 쿼리 생성
@@ -238,9 +232,6 @@ public class ElasticsearchService {
     		boolQuery.must(mustQuery);
     	}
     	boolQuery.filter(QueryBuilders.termQuery("is_deleted", 0));
-    	// "min_score" 조건 추가
-    	boolQuery.minimumShouldMatch(1);
-    	boolQuery.boost(50);
     	
     	if(params.getSearchMinPrice() != null && params.getSearchMinPrice() > 0) {
     		boolQuery.filter(QueryBuilders.rangeQuery("price").gte(params.getSearchMinPrice()));
@@ -252,6 +243,7 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
+    	        .withMinScore(50)
     	        .withPageable(PageRequest.of(0, 1));
     	
     	searchQuery.withSort(Sort.by(Sort.Direction.DESC, "insertion_time"));
