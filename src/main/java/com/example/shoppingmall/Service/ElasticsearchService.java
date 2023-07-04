@@ -115,6 +115,8 @@ public class ElasticsearchService {
     	            statistic.setKeyAsString(keyAsString);
     	            statistic.setDocCount(docCount);
     	            statistic.setAveragePrice(averagePrice);
+    	            
+    	            statistics.add(statistic);
     	        }
     	    }
     	}
