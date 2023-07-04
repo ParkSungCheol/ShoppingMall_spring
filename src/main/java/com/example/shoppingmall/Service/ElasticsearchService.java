@@ -204,8 +204,7 @@ public class ElasticsearchService {
     	// NativeSearchQueryBuilder를 사용하여 쿼리 생성
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withMinScore(50)
-    	        .withMinScore(0.0f); // adjust_pure_negative를 false로 설정
+    	        .withMinScore(50);
 
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
