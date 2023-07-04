@@ -70,7 +70,7 @@ public class UserController {
     	}
     	else {
 	    	session.invalidate();
-	    	return new ResponseEntity<>("notFound", HttpStatus.NOT_FOUND);
+	    	return new ResponseEntity<>("notFound", HttpStatus.SEE_OTHER);
     	}
     }
     

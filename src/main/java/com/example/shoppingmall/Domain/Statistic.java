@@ -11,7 +11,7 @@ public class Statistic {
 	@JsonProperty
     private long docCount;
 	@JsonProperty
-    private double averagePrice;
+    private int averagePrice;
 	public String getKeyAsString() {
 		return keyAsString;
 	}
@@ -24,10 +24,10 @@ public class Statistic {
 	public void setDocCount(long docCount) {
 		this.docCount = docCount;
 	}
-	public double getAveragePrice() {
+	public int getAveragePrice() {
 		return averagePrice;
 	}
-	public void setAveragePrice(double averagePrice) {
+	public void setAveragePrice(int averagePrice) {
 		this.averagePrice = averagePrice;
 	}
 }
