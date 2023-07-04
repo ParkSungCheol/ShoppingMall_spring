@@ -213,10 +213,12 @@ public class ElasticsearchService {
     	logger.info("[ count ] date : " + date);
     	logger.info("[ count ] Query : " + searchQueryComplete.getQuery().toString());
     	
-    	// 쿼리 실행
-    	long countAggregation = elasticsearchOperations.count(searchQueryComplete, Goods.class);
-    	logger.info("[ count ] countAggregation : " + countAggregation);
-    	if(countAggregation > 800) { countAggregation = 800; }
+    	SearchHits<Goods> searchHits = elasticsearchOperations.search(searchQueryComplete, Goods.class);
+    	long countAggregation = searchHits.getTotalHits();
+    	logger.info("[ count ] countAggregation: " + countAggregation);
+    	if (countAggregation > 800) {
+    	    countAggregation = 800;
+    	}
     	return (int) countAggregation;
     }
     
