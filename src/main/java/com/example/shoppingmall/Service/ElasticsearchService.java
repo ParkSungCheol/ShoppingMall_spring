@@ -78,7 +78,7 @@ public class ElasticsearchService {
 															                .must(mustQueryBuilder)
 															                .filter(filterQueryBuilder)).aggregation(aggregations).size(0);
 
-    	query.minScore(30.0f);
+    	query.minScore(20.0f);
     	
     	String jsonQuery = query.toString();
     	logger.info("####### jsonQuery : {}", jsonQuery);
@@ -145,7 +145,7 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withMinScore(30)
+    	        .withMinScore(20)
     	        .withPageable(PageRequest.of(params.getPage() - 1, params.getRecordSize()));
     	
     	// ORDER BY 절 추가
@@ -204,7 +204,7 @@ public class ElasticsearchService {
     	// NativeSearchQueryBuilder를 사용하여 쿼리 생성
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withMinScore(30);
+    	        .withMinScore(20);
 
     	// NativeSearchQuery를 사용하여 쿼리 생성
     	NativeSearchQuery searchQueryComplete = searchQuery.build();
@@ -244,7 +244,7 @@ public class ElasticsearchService {
     	// NativeSearchQuery를 사용하여 쿼리 실행
     	NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
     	        .withQuery(boolQuery)
-    	        .withMinScore(30)
+    	        .withMinScore(20)
     	        .withPageable(PageRequest.of(0, 1));
     	
     	searchQuery.withSort(Sort.by(Sort.Direction.DESC, "insertion_time"));
