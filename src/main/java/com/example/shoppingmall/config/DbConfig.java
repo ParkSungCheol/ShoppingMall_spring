@@ -53,6 +53,7 @@ public class DbConfig {
      * transaction manager
      */
     @Bean(name= "txManager")
+    // 트랜잭션 관리
     public PlatformTransactionManager txManager(@Qualifier("dataSource") DataSource dataSource) {
         DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(dataSource);
         dataSourceTransactionManager.setNestedTransactionAllowed(true); // nested

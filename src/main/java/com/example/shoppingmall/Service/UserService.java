@@ -1,23 +1,17 @@
 package com.example.shoppingmall.Service;
 
-import com.example.shoppingmall.Domain.Goods;
-import com.example.shoppingmall.Domain.User;
-import com.example.shoppingmall.Mail.MailHandler;
-import com.example.shoppingmall.Mail.TempKey;
-import com.example.shoppingmall.Mapper.UserMapper;
-import lombok.RequiredArgsConstructor;
-
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpSession;
+import com.example.shoppingmall.Domain.User;
+import com.example.shoppingmall.Mail.MailHandler;
+import com.example.shoppingmall.Mail.TempKey;
+import com.example.shoppingmall.Mapper.UserMapper;
 
 @Service
 public class UserService {
@@ -52,7 +46,8 @@ public class UserService {
     	return mailKey;
     }
     
-    @Async
+    // Async 어노테이션 이용해서 비동기처리
+    @Async("mailExecutor")
     public void sendJoinCertificationMail(String mailKey, String email) throws MessagingException, UnsupportedEncodingException {
 		MailHandler sendMail = new MailHandler(mailSender);
     	

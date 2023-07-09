@@ -8,20 +8,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import com.example.shoppingmall.Mail.TempKey;
-import com.example.shoppingmall.Mapper.UserMapper;
 
 @Service
 public class PhoneService {
@@ -33,6 +28,7 @@ public class PhoneService {
         this.env = env;
     }
 	
+	// NAVER SENS API 이용하여 메시지 전송
 	public String sendMessage(String phone) {
 		String num = new TempKey().getKey(4, true);
 		String hostNameUrl ="https://sens.apigw.ntruss.com";
@@ -64,7 +60,6 @@ public class PhoneService {
         bodyJson.put("messages", toArr);
 
         String body = bodyJson.toString();
-        System.out.println(body);
 
         try {
             URL url = new URL(apiUrl);
@@ -87,7 +82,6 @@ public class PhoneService {
 
             int responseCode = con.getResponseCode();
             BufferedReader br;
-            System.out.println("responseCode" + " " + responseCode);
             if(responseCode == 202) {
                 //정상호출
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -103,11 +97,10 @@ public class PhoneService {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response.toString());
             return num;
         }
         catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
     }

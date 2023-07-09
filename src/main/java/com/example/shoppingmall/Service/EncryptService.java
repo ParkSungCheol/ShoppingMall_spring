@@ -1,7 +1,6 @@
 package com.example.shoppingmall.Service;
 
 import java.security.MessageDigest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,7 @@ public class EncryptService {
         this.env = env;
     }
 	
+	// 문자열 암호화
 	public String encrypt(String planText) {
 		try {
 			MessageDigest md = MessageDigest.getInstance(env.getProperty("encrypt.encodingMethod"));

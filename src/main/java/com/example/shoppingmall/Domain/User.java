@@ -1,12 +1,8 @@
 package com.example.shoppingmall.Domain;
 
 import java.sql.Timestamp;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class User {

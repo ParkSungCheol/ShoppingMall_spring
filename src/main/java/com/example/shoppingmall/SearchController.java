@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,6 @@ public class SearchController {
 	        String term = searchItem.get("term") instanceof Integer? ((Integer) searchItem.get("term")).toString() : (String) searchItem.get("term");
 	        String useYn = searchItem.get("useYn") instanceof Integer? ((Integer) searchItem.get("useYn")).toString() : (String) searchItem.get("useYn");
 	        
-	        // 검색 항목 처리 로직 작성
 	        Search search = new Search();
 	        search.setPrice(Integer.parseInt(price));
 	        search.setSearchValue(searchValue);

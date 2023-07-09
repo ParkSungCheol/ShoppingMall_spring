@@ -1,12 +1,10 @@
 package com.example.shoppingmall;
 
 import java.util.Map;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.shoppingmall.Domain.User;
 import com.example.shoppingmall.Mail.TempKey;
 import com.example.shoppingmall.Service.EncryptService;
@@ -50,6 +47,8 @@ public class UserController {
     	
     	HttpSession session = request.getSession();
     	String selected = param.get("selected");
+    	
+    	// 사용자가 로그인유지 선택 시 유효시간 MAX_VALUE 할당
     	if(selected.equals("1")) {
     		Cookie cookie = new Cookie("JSESSIONID", session.getId());
         	cookie.setMaxAge(Integer.MAX_VALUE);
@@ -63,8 +62,9 @@ public class UserController {
     	user.setPwd(pwd);
     	User checkedUser = userService.existCheck(user);
     	
-    	System.out.println("session::::::::::::"+session);
+    	// 비밀번호 검증은 (입력받은 비밀번호 + 회원가입 시 설정된 salt값)의 인코딩값 과 DB에 저장되어있는 인코딩 결과값을 비교
     	if(checkedUser != null && encryptService.encrypt(user.getPwd() + checkedUser.getSalt()).equals(checkedUser.getPwd())) {
+    		// 로그인 검증완료 시 세션에 로그인 정보 저장
     		session.setAttribute("loginUserId", checkedUser);
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
@@ -96,6 +96,7 @@ public class UserController {
     	String mailKey = userService.sendEmail(email);
     	userService.sendJoinCertificationMail(mailKey, email);
     	
+    	// 추후 검증할 키값을 세션에 저장
     	session.setAttribute("mailKey", mailKey);
     	return new ResponseEntity<>("ok", HttpStatus.OK);
     }
@@ -107,6 +108,7 @@ public class UserController {
      	String userMailKey = param.get("email");
     	String mailKey = (String) session.getAttribute("mailKey");
     	
+    	// 세션에 저장된 키값과 비교하여 이메일 검증
     	if(userMailKey.equals(mailKey)) {
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
@@ -120,6 +122,8 @@ public class UserController {
     	HttpSession session = request.getSession();
     	String phone = param.get("phone");
         String num = phoneService.sendMessage(phone);
+        
+        // 추후 검증할 키값을 세션에 저장
         session.setAttribute("num", num);
         
         if(num != null ) {
@@ -137,6 +141,7 @@ public class UserController {
      	String userPhoneKey = param.get("phone");
     	String num = (String) session.getAttribute("num");
     	
+    	// 세션에 저장된 키값과 비교하여 핸드폰번호 검증
     	if(userPhoneKey.equals(num)) {
     		return new ResponseEntity<>("ok", HttpStatus.OK); 
     	}
@@ -178,6 +183,8 @@ public class UserController {
     	
      	User user = new User();
      	user.setId(id);
+     	
+     	// 비밀번호 암호화 시 필요한 salt값 랜덤생성
      	String num = new TempKey().getKey(4, true);
      	user.setSalt(num);
      	user.setPwd(encryptService.encrypt(pwd + num));
@@ -222,6 +229,8 @@ public class UserController {
      	else if(addressNumber != null && !addressNumber.equals("")) user.setAddress(addressNumber+"^"+address+"^"+addressDetail2);
      	if(email != null && !email.equals("")) user.setEmail(email);
      	if(phone != null && !phone.equals("")) user.setPhone(phone);
+     	
+     	// MyPage에서 비밀번호 변경 시 기존 비밀번호 일치하는지 검증
      	if(beforePwd != null && !beforePwd.equals("")) {
      		User checkedUser = userService.existCheck(user);
      		if(checkedUser != null && encryptService.encrypt(beforePwd + checkedUser.getSalt()).equals(checkedUser.getPwd())) {
@@ -234,7 +243,10 @@ public class UserController {
      			return new ResponseEntity<>("internalServerError", HttpStatus.INTERNAL_SERVER_ERROR);
      		}
      	}
+     	
         userService.updateUser(user);
+        
+        // 비밀번호 변경 시 재로그인 유도(세션만료)
         if(beforePwd != null && !beforePwd.equals("")) { 
         	session.invalidate();
         }
@@ -243,7 +255,6 @@ public class UserController {
 	        session.setAttribute("loginUserId", checkedUser);
         }
         
-        //MAPPER.INSERTUSER
         return new ResponseEntity<>("ok", HttpStatus.OK); 
     }
     
@@ -255,10 +266,10 @@ public class UserController {
     	User user = objectMapper.convertValue(param, User.class);
     	User checkedUser = userService.existCheck(user);
     	
+    	// 이미 핸드폰번호 또는 이메일 인증 시 해당 API가 호출되므로 별도의 인증절차 없음
     	user.setPwd(encryptService.encrypt(user.getPwd() + checkedUser.getSalt()));
         userService.updateUser(user);
         
-        //MAPPER.INSERTUSER
         return new ResponseEntity<>("ok", HttpStatus.OK); 
     }
     
@@ -270,6 +281,7 @@ public class UserController {
     	User user = objectMapper.convertValue(param, User.class);
     	User checkedUser = userService.existCheck(user);
     	
+    	// 회원탈퇴 시 세션만료
     	if(checkedUser != null) {
     		userService.deleteUser(checkedUser);
     		session.invalidate();

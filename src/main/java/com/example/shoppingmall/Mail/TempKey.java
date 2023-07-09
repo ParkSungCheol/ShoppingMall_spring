@@ -12,6 +12,7 @@ public class TempKey {
 		return init();
 	}
 	
+	// 랜덤한 영문자 및 숫자 문자열 생성
 	private String init() {
 		Random ran = new Random();
 		StringBuffer sb = new StringBuffer();
