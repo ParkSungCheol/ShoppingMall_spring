@@ -38,7 +38,6 @@ public class DbConfig {
     }
 
     @Bean(name = "dataSource")
-    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource DataSource() {
         DataSource dataSource = new HikariDataSource(hikariConfig());
         log.info(dataSource.toString());
