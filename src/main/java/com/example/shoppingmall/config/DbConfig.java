@@ -40,7 +40,6 @@ public class DbConfig {
     @Bean(name = "dataSource")
     public DataSource DataSource() {
         DataSource dataSource = new HikariDataSource(hikariConfig());
-        log.info(dataSource.toString());
         return dataSource;
     }
 
