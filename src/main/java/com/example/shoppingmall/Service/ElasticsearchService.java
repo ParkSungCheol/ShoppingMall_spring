@@ -104,8 +104,8 @@ public class ElasticsearchService {
     	        for (Bucket bucket : buckets) {
     	        	count++;
     	        	
-    	        	// 최신일자순으로(일자별 DESC정렬된 데이터) 10개까지만 return
-    	        	if(count > 10) break;
+    	        	// 최신일자순으로(일자별 DESC정렬된 데이터) 30개까지만 return
+    	        	if(count > 30) break;
     	        	
     	        	Statistic statistic = new Statistic();
     	            String keyAsString = bucket.getKeyAsString().substring(0, 10);
