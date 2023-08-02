@@ -1,6 +1,8 @@
 package com.example.shoppingmall.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,11 +10,22 @@ import com.example.shoppingmall.AuthLoginInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+	
+	private final Environment env;
+	
+	@Autowired
+    public WebConfig(Environment env) {
+        this.env = env;
+    }
+	
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+    	String allowedOrigins = env.getProperty("web.allowedOrigins");
+    	String[] allowedOriginsArray = allowedOrigins.split(",");
+    	
         registry.addMapping("/**")
         		// CORS 허용 Origins
-                .allowedOrigins("http://ec2-15-164-222-127.ap-northeast-2.compute.amazonaws.com:8080", "http://localhost:8080", "https://www.jurospring.o-r.kr")
+                .allowedOrigins(allowedOriginsArray)
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
                 // 쿠키 허용
                 .allowCredentials(true)
