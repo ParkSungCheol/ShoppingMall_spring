@@ -5,6 +5,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,7 @@ public class UserController {
 	private PhoneService phoneService;
 	@Autowired
 	private EncryptService encryptService;
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @GetMapping("/getSession")
     @Transactional(value="txManager")
@@ -230,6 +234,8 @@ public class UserController {
      	if(email != null && !email.equals("")) user.setEmail(email);
      	if(phone != null && !phone.equals("")) user.setPhone(phone);
      	
+     	logger.info("beforePwd : {}", beforePwd);
+     	logger.info("beforePwd != null && !beforePwd.equals(\"\") : {}", beforePwd != null && !beforePwd.equals(""));
      	// MyPage에서 비밀번호 변경 시 기존 비밀번호 일치하는지 검증
      	if(beforePwd != null && !beforePwd.equals("")) {
      		User checkedUser = userService.existCheck(user);
