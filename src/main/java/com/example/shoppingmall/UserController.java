@@ -222,7 +222,7 @@ public class UserController {
      	String addressDetail2 = param.get("addressDetail2");
      	String email = param.get("email");
      	String phone = param.get("phone");
-     	String beforePwd = param.get("beforePwd") != null && param.get("beforePwd").length() == 1 ? param.get("beforePwd") : null;
+     	String beforePwd = param.get("beforePwd");
      	String afterPwd = param.get("afterPwd");
     	
      	User user = new User();
@@ -234,8 +234,6 @@ public class UserController {
      	if(email != null && !email.equals("")) user.setEmail(email);
      	if(phone != null && !phone.equals("")) user.setPhone(phone);
      	
-     	logger.info("beforePwd : {}", beforePwd);
-     	logger.info("beforePwd != null && !beforePwd.equals(\"\") : {}", beforePwd != null && !beforePwd.equals(""));
      	// MyPage에서 비밀번호 변경 시 기존 비밀번호 일치하는지 검증
      	if(beforePwd != null && !beforePwd.equals("")) {
      		User checkedUser = userService.existCheck(user);
